@@ -4,9 +4,16 @@ import {
   Column,
   OneToMany,
   ManyToMany,
-  JoinTable
+  JoinTable,
+  ManyToOne,
+  JoinColumn
 } from "typeorm";
 import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
+import { Category } from "../../categories/entities/Category.entity";
+import { AdsState } from "../../constants/AdsState.enum";
+import { AdsTransferMode } from "../../constants/AdsTransferMode.enum";
+import { AdsStatus } from "../../constants/AdsStatus.enum";
+import { User } from "../../users/entities/User.entity";
 
 @Entity({ name: "ads" })
 export class Ads {
@@ -40,4 +47,109 @@ export class Ads {
   @ApiPropertyOptional({ type: "string", example: "2019-11-22T16:03:05Z" })
   @Column({ type: "timestamp with time zone" })
   active_until: Date;
+
+  @ApiPropertyOptional({ type: "string" })
+  @Column({ type: "varchar" })
+  city: string;
+
+  @ApiPropertyOptional()
+  @Column("enum", {
+    enum: AdsState
+  })
+  state: AdsState;
+
+  @ApiPropertyOptional()
+  @Column({ type: "text" })
+  state_description: string;
+
+  @ApiPropertyOptional()
+  @Column({ type: "float" })
+  weight: number;
+
+  @ApiPropertyOptional()
+  @Column({
+    type: "text"
+  })
+  title: string;
+
+  @ApiPropertyOptional()
+  @Column({ type: "text" })
+  description: string;
+
+  @ApiPropertyOptional()
+  @Column({ type: "decimal", scale: 2 })
+  price: number;
+
+  @ApiPropertyOptional()
+  @Column("enum", {
+    enum: AdsTransferMode
+  })
+  transfer_mode: AdsTransferMode;
+
+  @ApiPropertyOptional()
+  @Column({
+    type: "varchar"
+  })
+  deal_address: string;
+
+  @ApiPropertyOptional()
+  @Column({
+    type: "json"
+  })
+  deal_coordinates: JSON;
+
+  @ApiPropertyOptional({ type: "string" })
+  @Column({ type: "varchar" })
+  contact_email: string;
+
+  @ApiPropertyOptional({ type: "string" })
+  @Column({ type: "varchar" })
+  contact_phone: string;
+
+  @ApiPropertyOptional({ type: "string" })
+  @Column({ type: "varchar" })
+  contact_call_time_start: string;
+
+  @ApiPropertyOptional({ type: "string" })
+  @Column({ type: "varchar" })
+  contact_call_time_end: string;
+
+  @ApiPropertyOptional({ type: "boolean" })
+  @Column({ type: "boolean" })
+  contact_can_call_rdc: boolean;
+
+  @ApiPropertyOptional({ type: "boolean" })
+  @Column({ type: "boolean" })
+  contact_no_matter: boolean;
+
+  @ApiPropertyOptional()
+  @Column("enum", {
+    enum: AdsStatus
+  })
+  status: AdsStatus;
+
+  @ApiPropertyOptional({ type: "int" })
+  @Column({ type: "int" })
+  user_id: number;
+
+  @ApiPropertyOptional({ type: () => Category })
+  @ManyToMany(
+    () => Category,
+    (category: Category) => category.id,
+    { eager: true }
+  )
+  @JoinTable({
+    name: "ads_categories",
+    joinColumn: { name: "ad_id", referencedColumnName: "id" },
+    inverseJoinColumn: { name: "category_id", referencedColumnName: "id" }
+  })
+  category_id: Category[];
+
+  @ApiProperty()
+  @ManyToOne(
+    () => User,
+    (user: User) => user.ad
+  )
+  @JoinColumn({ name: "user_id" })
+  user: User;
 }
