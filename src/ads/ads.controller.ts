@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Param } from "@nestjs/common";
+import { Controller, Post, Body, Param, Get } from "@nestjs/common";
 import { AdsService } from "./ads.service";
 import {
   ApiOkResponse,
@@ -12,12 +12,15 @@ import { CreateAdDto } from "./dto/create-ad.dto";
 export class AdsController {
   constructor(private adsService: AdsService) {}
 
-    @ApiTags("Ads")
+  @ApiTags("Ads")
   @ApiCreatedResponse()
   @Post()
   createAd(@Body() body: CreateAdDto) {
     return this.adsService.createAd(body);
   }
 
-  @
+  @ApiTags("Ads")
+  @ApiOkResponse()
+  @Get()
+  getAllAds() {}
 }
