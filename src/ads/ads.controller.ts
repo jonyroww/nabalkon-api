@@ -12,10 +12,12 @@ import { CreateAdDto } from "./dto/create-ad.dto";
 export class AdsController {
   constructor(private adsService: AdsService) {}
 
-  @ApiTags("Organisations")
+    @ApiTags("Ads")
   @ApiCreatedResponse()
   @Post()
   createAd(@Body() body: CreateAdDto) {
     return this.adsService.createAd(body);
   }
+
+  @
 }
