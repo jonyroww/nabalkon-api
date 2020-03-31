@@ -27,6 +27,10 @@ export class CreateAdDto {
   @Transform(TransformDate)
   active_until: Date;
 
+  @ApiPropertyOptional()
+  @IsEnum(AdsState)
+  state: AdsState;
+
   @ApiPropertyOptional({ type: "string" })
   @IsOptional()
   @IsString()

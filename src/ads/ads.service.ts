@@ -11,7 +11,6 @@ export class AdsService {
 
   async createAd(body: CreateAdDto) {
     const ad = this.adsRepository.create(body);
-    ad.state = AdsState.NEW;
     ad.status = AdsStatus.AWAITING_FOR_ACTIVATION;
     ad.user_id = 1;
     await this.adsRepository.save(ad);
