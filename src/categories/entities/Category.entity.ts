@@ -24,6 +24,12 @@ export class Category {
   })
   title: string;
 
+  @ApiPropertyOptional()
+  @Column({
+    type: "varchar"
+  })
+  image_url: string;
+
   @ApiProperty()
   @Column({
     type: "int"
