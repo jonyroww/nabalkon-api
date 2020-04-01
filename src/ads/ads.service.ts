@@ -4,6 +4,8 @@ import { CreateAdDto } from "./dto/create-ad.dto";
 import { AdsState } from "../constants/AdsState.enum";
 import { AdsStatus } from "../constants/AdsStatus.enum";
 import { AdsTransferMode } from "../constants/AdsTransferMode.enum";
+import { GetAllDto } from "./dto/get-all-ad.dto";
+import { Order } from "../constants/Order.enum";
 
 @Injectable()
 export class AdsService {
@@ -17,5 +19,37 @@ export class AdsService {
     return ad;
   }
 
-  async getAllAds() {}
+  async getAllAds(query: GetAllDto) {
+    const qb = this.adsRepository.createQueryBuilder();
+    qb.where("FALSE");
+    if (query.category_id) {
+      qb.andWhere("ads.category_id = :category_id", {
+        category_id: query.category_id
+      });
+    }
+
+    if (query.city) {
+      qb.andWhere("ads.city = :city", {
+        city: query.city
+      });
+    }
+    qb.andWhere("ads.price >= :price_from", {
+      price_from: query.price_from || 0
+    });
+
+    if (query.price_to) {
+      qb.andWhere("ads.price < :price_to", {
+        price_to: query.price_to
+      });
+    }
+
+    if (query.sort && query.order) {
+      qb.orderBy(query.sort, query.order);
+    }
+
+    return qb
+      .take(query.limit)
+      .offset(query.offset)
+      .getMany();
+  }
 }
