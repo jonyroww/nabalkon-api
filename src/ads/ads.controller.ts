@@ -1,4 +1,4 @@
-import { Controller, Post, Body, Param, Get } from "@nestjs/common";
+import { Controller, Post, Body, Param, Get, Query } from "@nestjs/common";
 import { AdsService } from "./ads.service";
 import {
   ApiOkResponse,
@@ -22,5 +22,5 @@ export class AdsController {
   @ApiTags("Ads")
   @ApiOkResponse()
   @Get()
-  getAllAds() {}
+  getAllAds(@Query() query) {}
 }

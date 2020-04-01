@@ -16,4 +16,6 @@ export class AdsService {
     await this.adsRepository.save(ad);
     return ad;
   }
+
+  async getAllAds() {}
 }
