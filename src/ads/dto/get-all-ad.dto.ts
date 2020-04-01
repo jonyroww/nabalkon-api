@@ -12,18 +12,39 @@ import {
   IsEnum,
   IsJSON
 } from "class-validator";
-import { Transform } from "class-transformer";
-import { TransformInt } from "../../common/utils/transform-int.util";
-import { TransformIntArray } from "../../common/utils/transform-array-int.util";
-import { TransformDate } from "../../common/utils/transform-date.util";
 import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
-import { AdsState } from "../../constants/AdsState.enum";
-import { AdsStatus } from "../../constants/AdsStatus.enum";
-import { AdsTransferMode } from "../../constants/AdsTransferMode.enum";
+import { Order } from "../../constants/Order.enum";
+import { PaginationFilterDto } from "../../common/dto/pagination-filter.dto";
 
-export class GetAllDto {
-  @ApiProperty({ type: "number" })
+export class GetAllDto extends PaginationFilterDto {
+  @ApiPropertyOptional({ type: "number" })
   @IsNumber()
   @IsInt()
   category_id: number;
+
+  @ApiPropertyOptional({ type: "string" })
+  @IsString()
+  city: string;
+
+  @ApiPropertyOptional({ type: "number" })
+  @IsNumber()
+  @IsInt()
+  price_from: number;
+
+  @ApiPropertyOptional({ type: "number" })
+  @IsNumber()
+  @IsInt()
+  price_to: number;
+
+  @ApiPropertyOptional({ type: "string" })
+  @IsString()
+  search_text: string;
+
+  @ApiPropertyOptional({ type: "string" })
+  @IsString()
+  sort: string;
+
+  @ApiPropertyOptional({ enum: Order })
+  @IsEnum(Order)
+  order: Order;
 }
