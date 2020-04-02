@@ -4,9 +4,8 @@ import { CreateAdDto } from "./dto/create-ad.dto";
 import { AdsState } from "../constants/AdsState.enum";
 import { AdsStatus } from "../constants/AdsStatus.enum";
 import { AdsTransferMode } from "../constants/AdsTransferMode.enum";
-import { GetAllDto } from "./dto/get-all-ad.dto";
+import { GetAllQueryDto } from "./dto/get-all-query.dto";
 import { Order } from "../constants/Order.enum";
-import { ApiTooManyRequestsResponse } from "@nestjs/swagger";
 
 @Injectable()
 export class AdsService {
@@ -20,7 +19,7 @@ export class AdsService {
     return ad;
   }
 
-  async getAllAds(query: GetAllDto) {
+  async getAllAds(query: GetAllQueryDto) {
     const qb = this.adsRepository.createQueryBuilder("ads");
 
     qb.where("ads.deleted_at is null")
@@ -28,6 +27,12 @@ export class AdsService {
         status: AdsStatus.ACTIVE
       })
       .andWhere("ads.active_until > NOW()");
+
+    if (query.q) {
+      qb.addSelect(`word_similarity (:q, "title")`, "similarity_rank");
+      qb.andWhere(`:q <% "title"`);
+      qb.setParameter("q", query.q);
+    }
 
     if (query.category_id) {
       qb.andWhere("ads.category_id = :category_id", {
@@ -52,8 +57,9 @@ export class AdsService {
     }
 
     if (query.sort && query.order) {
-      qb.orderBy(query.sort, query.order);
+      qb.orderBy(query.sort, query.order || Order.ASC);
     }
+
     const [data, total] = await qb
       .take(query.limit)
       .offset(query.offset)

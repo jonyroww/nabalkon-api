@@ -16,7 +16,7 @@ import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
 import { Order } from "../../constants/Order.enum";
 import { PaginationFilterDto } from "../../common/dto/pagination-filter.dto";
 
-export class GetAllDto extends PaginationFilterDto {
+export class GetAllQueryDto extends PaginationFilterDto {
   @ApiPropertyOptional({ type: "number" })
   @IsNumber()
   @IsInt()
@@ -47,4 +47,8 @@ export class GetAllDto extends PaginationFilterDto {
   @ApiPropertyOptional({ enum: Order })
   @IsEnum(Order)
   order: Order;
+
+  @ApiPropertyOptional({ type: "string" })
+  @IsString()
+  q: string;
 }

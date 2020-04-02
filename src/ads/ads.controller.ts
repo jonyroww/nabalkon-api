@@ -7,7 +7,7 @@ import {
   ApiBearerAuth
 } from "@nestjs/swagger";
 import { CreateAdDto } from "./dto/create-ad.dto";
-import { GetAllDto } from "./dto/get-all-ad.dto";
+import { GetAllQueryDto } from "./dto/get-all-query.dto";
 
 @Controller("ads")
 export class AdsController {
@@ -23,7 +23,7 @@ export class AdsController {
   @ApiTags("Ads")
   @ApiOkResponse()
   @Get()
-  getAllAds(@Query() query: GetAllDto) {
+  getAllAds(@Query() query: GetAllQueryDto) {
     return this.adsService.getAllAds(query);
   }
 }
