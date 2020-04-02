@@ -6,6 +6,7 @@ import { AdsStatus } from "../constants/AdsStatus.enum";
 import { AdsTransferMode } from "../constants/AdsTransferMode.enum";
 import { GetAllDto } from "./dto/get-all-ad.dto";
 import { Order } from "../constants/Order.enum";
+import { ApiTooManyRequestsResponse } from "@nestjs/swagger";
 
 @Injectable()
 export class AdsService {
@@ -20,8 +21,14 @@ export class AdsService {
   }
 
   async getAllAds(query: GetAllDto) {
-    const qb = this.adsRepository.createQueryBuilder();
-    qb.where("FALSE");
+    const qb = this.adsRepository.createQueryBuilder("ads");
+
+    qb.where("ads.deleted_at is null")
+      .andWhere("ads.status = :status", {
+        status: AdsStatus.ACTIVE
+      })
+      .andWhere("ads.active_until > NOW()");
+
     if (query.category_id) {
       qb.andWhere("ads.category_id = :category_id", {
         category_id: query.category_id
@@ -33,6 +40,7 @@ export class AdsService {
         city: query.city
       });
     }
+
     qb.andWhere("ads.price >= :price_from", {
       price_from: query.price_from || 0
     });
@@ -46,10 +54,10 @@ export class AdsService {
     if (query.sort && query.order) {
       qb.orderBy(query.sort, query.order);
     }
-
-    return qb
+    const [data, total] = await qb
       .take(query.limit)
       .offset(query.offset)
-      .getMany();
+      .getManyAndCount();
+    return { total: total, data: data };
   }
 }
