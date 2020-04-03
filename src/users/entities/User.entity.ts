@@ -5,10 +5,12 @@ import {
   OneToMany,
   ManyToMany,
   JoinTable,
-  Index
+  Index,
+  OneToOne
 } from "typeorm";
 import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
 import { Ads } from "../../ads/entities/Ads.entity";
+import { PhoneVerification } from "../../phone-verification/entities/Phone-verification.entity";
 
 @Entity({ name: "users" })
 export class User {
@@ -83,6 +85,12 @@ export class User {
   @ApiPropertyOptional({ type: "string" })
   @Column({ type: "varchar", unique: true })
   password: string;
+
+  @OneToOne(
+    () => PhoneVerification,
+    (registration: PhoneVerification) => registration.user
+  )
+  registration: PhoneVerification;
 
   @ApiProperty()
   @OneToMany(
