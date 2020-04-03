@@ -132,18 +132,9 @@ export class Ads {
   @Column({ type: "int" })
   user_id: number;
 
-  @ApiPropertyOptional({ type: () => Category })
-  @ManyToMany(
-    () => Category,
-    (category: Category) => category.id,
-    { eager: true }
-  )
-  @JoinTable({
-    name: "ads_categories",
-    joinColumn: { name: "ad_id", referencedColumnName: "id" },
-    inverseJoinColumn: { name: "category_id", referencedColumnName: "id" }
-  })
-  category_id: Category[];
+  @ApiProperty({ type: "int" })
+  @Column({ type: "int" })
+  category_id: number;
 
   @ApiProperty()
   @ManyToOne(

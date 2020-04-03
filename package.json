@@ -30,9 +30,11 @@
     "class-transformer": "^0.2.3",
     "class-validator": "^0.12.0-rc.0",
     "dotenv": "^8.2.0",
+    "pg": "^8.0.0",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.0",
     "rxjs": "^6.5.4",
+    "swagger-ui-express": "^4.1.4",
     "typeorm": "^0.2.24",
     "typeorm-transactional-cls-hooked": "^0.1.12"
   },

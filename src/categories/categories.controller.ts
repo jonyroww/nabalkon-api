@@ -1,6 +1,5 @@
 import { Controller } from "@nestjs/common";
 import { CategoriesService } from "./categories.service";
-
 import {
   ApiOkResponse,
   ApiTags,
