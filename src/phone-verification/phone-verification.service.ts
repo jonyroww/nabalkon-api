@@ -7,6 +7,8 @@ import { makeError } from "../common/errors/index";
 import axios from "axios";
 import { PurposeType } from "src/constants/PurposeType.enum";
 import { UserRepository } from "../users/repositories/User.repository";
+import { VerificationPhoneDto } from "./dto/verification-phone.dto";
+import { PhoneVerificationIdDto } from "./dto/phone-verification-id.dto";
 
 @Injectable()
 export class PhoneVerificationService {
@@ -47,7 +49,39 @@ export class PhoneVerificationService {
     await this.phoneVerificationRepository.save(phoneVerificationRequest);
     return {
       id: phoneVerificationRequest.id,
-      key: phoneVerificationRequest.key
+      key: phoneVerificationRequest.key,
     };
+  }
+
+  async verificationPhone(
+    body: VerificationPhoneDto,
+    params: PhoneVerificationIdDto
+  ) {
+    const phoneVerification = await this.phoneVerificationRepository.findOne({
+      id: params.id,
+    });
+
+    if (!phoneVerification) {
+      throw makeError("RECORD_NOT_FOUND");
+    } else if (body.key != phoneVerification.key) {
+      throw makeError("KEY_IS_NOT_VALID");
+    } else if (phoneVerification.success !== false) {
+      throw makeError("CODE_ALREADY_USED");
+    } else if (phoneVerification.used === true) {
+      throw makeError("VERIFICATION_ALREADY_USED");
+    } else if (phoneVerification.wrong_attempts_count > 5) {
+      throw makeError("MAX_LIMIT_OF_WRONG_ATTEMPTS");
+    }
+
+    if (phoneVerification.sms_code != body.sms_code) {
+      phoneVerification.wrong_attempts_count += 1;
+      await this.phoneVerificationRepository.save(phoneVerification);
+      throw makeError("SMS_CODE_IS_NOT_CORRECT");
+    } else {
+      phoneVerification.success = true;
+      phoneVerification.used = true;
+      await this.phoneVerificationRepository.save(phoneVerification);
+    }
+    return phoneVerification;
   }
 }
