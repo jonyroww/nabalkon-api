@@ -1,14 +1,24 @@
-import { Controller, Post, Body, Param, Get, Query } from "@nestjs/common";
+import {
+  Controller,
+  Post,
+  Body,
+  Param,
+  Get,
+  Query,
+  UsePipes,
+  ValidationPipe,
+} from "@nestjs/common";
 import { AdsService } from "./ads.service";
 import {
   ApiOkResponse,
   ApiTags,
   ApiCreatedResponse,
-  ApiBearerAuth
+  ApiBearerAuth,
 } from "@nestjs/swagger";
 import { CreateAdDto } from "./dto/create-ad.dto";
 import { GetAllQueryDto } from "./dto/get-all-query.dto";
 
+@UsePipes(new ValidationPipe({ transform: true, whitelist: true }))
 @Controller("ads")
 export class AdsController {
   constructor(private adsService: AdsService) {}

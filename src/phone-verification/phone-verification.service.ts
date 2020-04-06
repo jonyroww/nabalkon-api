@@ -9,6 +9,7 @@ import { PurposeType } from "src/constants/PurposeType.enum";
 import { UserRepository } from "../users/repositories/User.repository";
 import { VerificationPhoneDto } from "./dto/verification-phone.dto";
 import { PhoneVerificationIdDto } from "./dto/phone-verification-id.dto";
+import { VerificationResendDto } from "./dto/verification-resend.dto";
 
 @Injectable()
 export class PhoneVerificationService {
@@ -82,6 +83,51 @@ export class PhoneVerificationService {
       phoneVerification.used = true;
       await this.phoneVerificationRepository.save(phoneVerification);
     }
+    return phoneVerification;
+  }
+
+  async verificationPhoneResend(
+    body: VerificationResendDto,
+    params: PhoneVerificationIdDto
+  ) {
+    const phoneVerification = await this.phoneVerificationRepository.findOne(
+      params.id
+    );
+
+    if (!phoneVerification) {
+      throw makeError("RECORD_NOT_FOUND");
+    } else if (body.key != phoneVerification.key) {
+      throw makeError("KEY_IS_NOT_VALID");
+    } else if (phoneVerification.success === true) {
+      throw makeError("CODE_ALREADY_USED");
+    } else if (phoneVerification.used === true) {
+      throw makeError("VERIFICATION_ALREADY_USED");
+    } else if (phoneVerification.sms_sent_count > 5) {
+      throw makeError("LIMIT_EXCEEDED");
+    }
+
+    const interval = Date.now() - phoneVerification.sms_last_sent_at.getTime();
+    if (interval < 2 * 60 * 1000) {
+      throw makeError("TIME_INTERVAL_IS_NOT_OVER");
+    }
+
+    const smsCode = this.configService.get("SMS_CODE_GEN")
+      ? cryptoRandomString({ length: 6, type: "numeric" })
+      : "111111";
+
+    if (this.configService.get("SMS_CODE_GEN")) {
+      await axios.get(
+        `https://sms.ru/sms/send?api_id=${this.configService.get(
+          "SMS_API_ID"
+        )}&to=${phoneVerification.phone}&msg=${smsCode}`
+      );
+    }
+    phoneVerification.sms_code = smsCode;
+    phoneVerification.sms_sent_count += 1;
+    phoneVerification.wrong_attempts_count = 0;
+    phoneVerification.sms_last_sent_at = new Date();
+    await this.phoneVerificationRepository.save(phoneVerification);
+
     return phoneVerification;
   }
 }
