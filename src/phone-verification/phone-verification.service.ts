@@ -80,7 +80,6 @@ export class PhoneVerificationService {
       throw makeError("SMS_CODE_IS_NOT_CORRECT");
     } else {
       phoneVerification.success = true;
-      phoneVerification.used = true;
       await this.phoneVerificationRepository.save(phoneVerification);
     }
     return phoneVerification;
