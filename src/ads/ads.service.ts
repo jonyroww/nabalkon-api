@@ -6,15 +6,16 @@ import { AdsStatus } from "../constants/AdsStatus.enum";
 import { AdsTransferMode } from "../constants/AdsTransferMode.enum";
 import { GetAllQueryDto } from "./dto/get-all-query.dto";
 import { Order } from "../constants/Order.enum";
+import { User } from "../users/entities/User.entity";
 
 @Injectable()
 export class AdsService {
   constructor(private adsRepository: AdsRepository) {}
 
-  async createAd(body: CreateAdDto) {
+  async createAd(body: CreateAdDto, user: User) {
     const ad = this.adsRepository.create(body);
     ad.status = AdsStatus.AWAITING_FOR_ACTIVATION;
-    ad.user_id = 1;
+    ad.user_id = user.id;
     await this.adsRepository.save(ad);
     return ad;
   }
@@ -24,7 +25,7 @@ export class AdsService {
 
     qb.where("ads.deleted_at is null")
       .andWhere("ads.status = :status", {
-        status: AdsStatus.ACTIVE
+        status: AdsStatus.ACTIVE,
       })
       .andWhere("ads.active_until > NOW()");
 
@@ -36,23 +37,23 @@ export class AdsService {
 
     if (query.category_id) {
       qb.andWhere("ads.category_id = :category_id", {
-        category_id: query.category_id
+        category_id: query.category_id,
       });
     }
 
     if (query.city) {
       qb.andWhere("ads.city = :city", {
-        city: query.city
+        city: query.city,
       });
     }
 
     qb.andWhere("ads.price >= :price_from", {
-      price_from: query.price_from || 0
+      price_from: query.price_from || 0,
     });
 
     if (query.price_to) {
       qb.andWhere("ads.price < :price_to", {
-        price_to: query.price_to
+        price_to: query.price_to,
       });
     }
 

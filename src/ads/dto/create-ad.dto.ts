@@ -10,7 +10,7 @@ import {
   IsArray,
   IsDate,
   IsEnum,
-  IsJSON
+  IsJSON,
 } from "class-validator";
 import { Transform } from "class-transformer";
 import { TransformInt } from "../../common/utils/transform-int.util";
@@ -103,10 +103,8 @@ export class CreateAdDto {
   @IsBoolean()
   contact_no_matter: boolean;
 
-  @ApiProperty({ type: "number", isArray: true })
-  @IsArray()
-  @IsOptional()
-  @IsNumber({}, { each: true })
-  @Transform(TransformIntArray)
-  categories_ids: Array<number>;
+  @ApiProperty({ type: "number" })
+  @IsNumber()
+  @Transform(TransformInt)
+  category_id: number;
 }

@@ -5,10 +5,12 @@ import {
   OneToMany,
   ManyToMany,
   JoinTable,
-  Index
+  Index,
+  OneToOne,
 } from "typeorm";
 import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
 import { Ads } from "../../ads/entities/Ads.entity";
+import { PhoneVerification } from "../../phone-verification/entities/Phone-verification.entity";
 
 @Entity({ name: "users" })
 export class User {
@@ -16,19 +18,19 @@ export class User {
   @PrimaryColumn({
     type: "int",
     generated: true,
-    readonly: true
+    readonly: true,
   })
   id: number;
 
   @ApiProperty({
     type: "string",
     example: "2019-11-22T16:03:05Z",
-    nullable: false
+    nullable: false,
   })
   @Index()
   @Column({
     nullable: false,
-    type: "timestamp with time zone"
+    type: "timestamp with time zone",
   })
   created_at: Date;
 
@@ -83,6 +85,12 @@ export class User {
   @ApiPropertyOptional({ type: "string" })
   @Column({ type: "varchar", unique: true })
   password: string;
+
+  @OneToOne(
+    () => PhoneVerification,
+    (registration: PhoneVerification) => registration.user
+  )
+  registration: PhoneVerification;
 
   @ApiProperty()
   @OneToMany(

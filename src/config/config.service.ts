@@ -26,9 +26,11 @@ export class ConfigService {
       DB_PASSWORD: Joi.string().required(),
       DB_NAME: Joi.string().required(),
       JWT_SECRET: Joi.string().required(),
+      SMS_API_ID: Joi.string().required(),
       BASE_URL: Joi.string()
         .uri()
-        .required()
+        .required(),
+      SMS_CODE_GEN: Joi.boolean().required()
     }).options({
       stripUnknown: true
     });
@@ -51,4 +53,6 @@ export interface EnvironmentConfig {
   DB_NAME: string;
   JWT_SECRET: string;
   BASE_URL: string;
+  SMS_CODE_GEN: boolean;
+  SMS_API_ID: string;
 }
