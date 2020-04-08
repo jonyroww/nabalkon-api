@@ -6,6 +6,8 @@ import { RegistrationBodyDto } from "./dto/registration-body.dto";
 import { PhoneVerificationRepository } from "../phone-verification/repositories/Phone-verification.repository";
 import { PurposeType } from "src/constants/PurposeType.enum";
 import { JwtService } from "@nestjs/jwt";
+import { User } from "../users/entities/User.entity";
+import { IJwtPayload } from "./interfaces/JwtPayload.interface";
 
 @Injectable()
 export class AuthService {
@@ -51,6 +53,16 @@ export class AuthService {
       exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 7,
     });
     return { token: token };
+  }
+
+  async userLogin(user: User) {
+    const payload: IJwtPayload = {
+      sub: user.id,
+      exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 7,
+    };
+    return {
+      token: await this.jwtService.signAsync(payload),
+    };
   }
 
   async validateUser(phone: string, password: string) {
