@@ -5,6 +5,7 @@ import {
   UseGuards,
   UsePipes,
   ValidationPipe,
+  Get,
 } from "@nestjs/common";
 import { AuthGuard } from "@nestjs/passport";
 import {
@@ -39,5 +40,14 @@ export class AuthController {
   @UseGuards(AuthGuard("local"))
   async userLogin(@GetUser() user: User) {
     return await this.authService.userLogin(user);
+  }
+
+  @Get("/me")
+  @ApiTags("Auth")
+  @UseGuards(AuthGuard("jwt"))
+  @ApiBearerAuth()
+  @ApiOkResponse({ type: User })
+  async me(@GetUser() user: User) {
+    return user;
   }
 }
