@@ -64,6 +64,7 @@ export class AuthService {
       token: await this.jwtService.signAsync(payload),
     };
   }
+  async emailVerification(user: User) {}
 
   async validateUser(phone: string, password: string) {
     const user = await this.userRepository.findOne({ phone: phone });

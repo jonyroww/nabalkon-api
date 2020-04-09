@@ -42,6 +42,13 @@ export class AuthController {
     return await this.authService.userLogin(user);
   }
 
+  @Post("/email-verification")
+  @ApiTags("Auth")
+  @ApiCreatedResponse()
+  emailVerification(@GetUser() user: User) {
+    return this.authService.emailVerification(user);
+  }
+
   @Get("/me")
   @ApiTags("Auth")
   @UseGuards(AuthGuard("jwt"))
