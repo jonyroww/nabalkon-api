@@ -8,13 +8,18 @@ import { PurposeType } from "src/constants/PurposeType.enum";
 import { JwtService } from "@nestjs/jwt";
 import { User } from "../users/entities/User.entity";
 import { IJwtPayload } from "./interfaces/JwtPayload.interface";
+import { MailerService } from "@nest-modules/mailer";
+import { ConfigService } from "../config/config.service";
+import { EmailTokenDto } from "./dto/email-confirm-query.dto";
 
 @Injectable()
 export class AuthService {
   constructor(
     private userRepository: UserRepository,
     private phoneVerificationRepository: PhoneVerificationRepository,
-    private jwtService: JwtService
+    private jwtService: JwtService,
+    private mailerService: MailerService,
+    private configService: ConfigService
   ) {}
 
   async registrationUser(body: RegistrationBodyDto) {
@@ -64,7 +69,37 @@ export class AuthService {
       token: await this.jwtService.signAsync(payload),
     };
   }
-  async emailVerification(user: User) {}
+  async emailVerificationSend(user: User) {
+    const token = await this.jwtService.signAsync({
+      user_id: user.id,
+      purpose: PurposeType.EMAIL_VERIFICATION,
+      exp: Math.floor(Date.now() / 1000) + 60 * 60,
+    });
+
+    await this.mailerService.sendMail({
+      to: user.email,
+      subject: "Nabalkon - подтверждение почты",
+      text: `Для подтверждения почты перейдите по ссылке: ${this.configService.get(
+        "BASE_URL"
+      )}/auth/email-confirm?token=${encodeURIComponent(token)}`,
+    });
+  }
+
+  async emailConfirm(query: EmailTokenDto) {
+    const jwtSign = await this.jwtService.verifyAsync(query.token);
+    if (jwtSign && jwtSign.purpose === PurposeType.EMAIL_VERIFICATION) {
+      const user = await this.userRepository.findOne({ id: jwtSign.user_id });
+      if (user && !user.deleted_at) {
+        user.email_confirmed = true;
+        await this.userRepository.save(user);
+      } else {
+        throw makeError("USER_NOT_FOUND");
+      }
+    } else {
+      throw makeError("FORBIDDEN");
+    }
+    return jwtSign;
+  }
 
   async validateUser(phone: string, password: string) {
     const user = await this.userRepository.findOne({ phone: phone });

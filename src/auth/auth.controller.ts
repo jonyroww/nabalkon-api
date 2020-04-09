@@ -6,6 +6,7 @@ import {
   UsePipes,
   ValidationPipe,
   Get,
+  Query,
 } from "@nestjs/common";
 import { AuthGuard } from "@nestjs/passport";
 import {
@@ -20,6 +21,7 @@ import { AuthService } from "./auth.service";
 import { GetUser } from "../common/decorators/get-user.decorator";
 import { User } from "../users/entities/User.entity";
 import { UserLoginDto } from "./dto/login-body.dto";
+import { EmailTokenDto } from "./dto/email-confirm-query.dto";
 
 @UsePipes(new ValidationPipe({ transform: true, whitelist: true }))
 @Controller("auth")
@@ -44,9 +46,18 @@ export class AuthController {
 
   @Post("/email-verification")
   @ApiTags("Auth")
+  @UseGuards(AuthGuard("jwt"))
+  @ApiBearerAuth()
   @ApiCreatedResponse()
   emailVerification(@GetUser() user: User) {
-    return this.authService.emailVerification(user);
+    return this.authService.emailVerificationSend(user);
+  }
+
+  @Get("/email-confirm")
+  @ApiTags("Auth")
+  @ApiCreatedResponse()
+  emailConfirm(@Query() query: EmailTokenDto) {
+    return this.authService.emailConfirm(query);
   }
 
   @Get("/me")
