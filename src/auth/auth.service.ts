@@ -39,7 +39,7 @@ export class AuthService {
       throw makeError("VERIFICATION_ALREADY_USED");
     }
     const isPhoneUnique = await this.userRepository.findOne({
-      phone: phoneVerification.phone,
+      phone: phoneVerification.phone
     });
     if (isPhoneUnique) {
       throw makeError("PHONE_ALREADY_EXISTS");
@@ -55,7 +55,7 @@ export class AuthService {
     await this.userRepository.save(user);
     const token = await this.jwtService.signAsync({
       sub: user.id,
-      exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 7,
+      exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 7
     });
     return { token: token };
   }
@@ -63,25 +63,28 @@ export class AuthService {
   async userLogin(user: User) {
     const payload: IJwtPayload = {
       sub: user.id,
-      exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 7,
+      exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 7
     };
     return {
-      token: await this.jwtService.signAsync(payload),
+      token: await this.jwtService.signAsync(payload)
     };
   }
   async emailVerificationSend(user: User) {
     const token = await this.jwtService.signAsync({
       user_id: user.id,
       purpose: PurposeType.EMAIL_VERIFICATION,
-      exp: Math.floor(Date.now() / 1000) + 60 * 60,
+      exp: Math.floor(Date.now() / 1000) + 60 * 60
     });
 
     await this.mailerService.sendMail({
       to: user.email,
       subject: "Nabalkon - подтверждение почты",
-      text: `Для подтверждения почты перейдите по ссылке: ${this.configService.get(
-        "BASE_URL"
-      )}/auth/email-confirm?token=${encodeURIComponent(token)}`,
+      template: "email-verification.html",
+      context: {
+        link: `${this.configService.get(
+          "BASE_URL"
+        )}/auth/email-confirm?token=${encodeURIComponent(token)}`
+      }
     });
   }
 
@@ -89,16 +92,18 @@ export class AuthService {
     const jwtSign = await this.jwtService.verifyAsync(query.token);
     if (jwtSign && jwtSign.purpose === PurposeType.EMAIL_VERIFICATION) {
       const user = await this.userRepository.findOne({ id: jwtSign.user_id });
-      if (user && !user.deleted_at) {
-        user.email_confirmed = true;
-        await this.userRepository.save(user);
-      } else {
+      if (!user && user.deleted_at) {
         throw makeError("USER_NOT_FOUND");
       }
+      if (user.email_confirmed === true) {
+        throw makeError("EMAIL_ALREADY_CONFIRMED");
+      }
+      user.email_confirmed = true;
+      await this.userRepository.save(user);
     } else {
       throw makeError("FORBIDDEN");
     }
-    return jwtSign;
+    return;
   }
 
   async validateUser(phone: string, password: string) {
