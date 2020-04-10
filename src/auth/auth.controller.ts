@@ -7,7 +7,8 @@ import {
   ValidationPipe,
   Get,
   Query,
-  Redirect
+  Redirect,
+  Res
 } from "@nestjs/common";
 import { AuthGuard } from "@nestjs/passport";
 import {
@@ -24,6 +25,7 @@ import { User } from "../users/entities/User.entity";
 import { UserLoginDto } from "./dto/login-body.dto";
 import { EmailTokenDto } from "./dto/email-confirm-query.dto";
 import { ConfigService } from "../config/config.service";
+import { Response } from "express";
 
 @UsePipes(new ValidationPipe({ transform: true, whitelist: true }))
 @Controller("auth")
@@ -61,9 +63,15 @@ export class AuthController {
   @Get("/email-confirm")
   @ApiTags("Auth")
   @ApiCreatedResponse()
-  @Redirect(this.configService.get("REDIRECT_URI"), 201)
-  emailConfirm(@Query() query: EmailTokenDto) {
-    return this.authService.emailConfirm(query);
+  async emailConfirm(@Query() query: EmailTokenDto, @Res() res: Response) {
+    const jwtSign = await this.authService.emailConfirm(query);
+    if (jwtSign) {
+      try {
+        res.redirect(this.configService.get("REDIRECT_URI_SUCCESS"));
+      } catch (err) {
+        res.status(400).json(err);
+      }
+    }
   }
 
   @Get("/me")

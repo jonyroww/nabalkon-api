@@ -90,6 +90,7 @@ export class AuthService {
 
   async emailConfirm(query: EmailTokenDto) {
     const jwtSign = await this.jwtService.verifyAsync(query.token);
+
     if (jwtSign && jwtSign.purpose === PurposeType.EMAIL_VERIFICATION) {
       const user = await this.userRepository.findOne({ id: jwtSign.user_id });
       if (!user && user.deleted_at) {
@@ -100,10 +101,10 @@ export class AuthService {
       }
       user.email_confirmed = true;
       await this.userRepository.save(user);
+      return jwtSign;
     } else {
       throw makeError("FORBIDDEN");
     }
-    return;
   }
 
   async validateUser(phone: string, password: string) {

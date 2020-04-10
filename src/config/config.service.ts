@@ -33,7 +33,8 @@ export class ConfigService {
       SMS_CODE_GEN: Joi.boolean().required(),
       SMTP_URL: Joi.string().required(),
       EMAIL_FROM: Joi.string().required(),
-      REDIRECT_URI: Joi.string().required()
+      REDIRECT_URI_SUCCESS: Joi.string().required(),
+      REDIRECT_URI_ERROR: Joi.string().required()
     }).options({
       stripUnknown: true
     });
@@ -60,5 +61,6 @@ export interface EnvironmentConfig {
   SMS_API_ID: string;
   EMAIL_FROM: string;
   SMTP_URL: string;
-  REDIRECT_URI: string;
+  REDIRECT_URI_SUCCESS: string;
+  REDIRECT_URI_ERROR: string;
 }

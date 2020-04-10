@@ -8,7 +8,7 @@ import {
 } from "typeorm";
 import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
 
-@Entity({ name: "category" })
+@Entity({ name: "categories" })
 export class Category {
   @ApiProperty()
   @PrimaryColumn({

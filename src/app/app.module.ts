@@ -8,6 +8,7 @@ import { HandlebarsAdapter, MailerModule } from "@nest-modules/mailer";
 import { ConfigService } from "../config/config.service";
 import path from "path";
 import appRootPath from "app-root-path";
+import { CategoriesModule } from "../categories/categories.module";
 
 @Module({
   imports: [
@@ -28,7 +29,8 @@ import appRootPath from "app-root-path";
     AdsModule,
     ConfigModule,
     PhoneVerificationModule,
-    AuthModule
+    AuthModule,
+    CategoriesModule
   ],
   controllers: [],
   providers: []
