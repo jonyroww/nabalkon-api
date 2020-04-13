@@ -69,7 +69,7 @@ export class AuthController {
       try {
         res.redirect(this.configService.get("REDIRECT_URI_SUCCESS"));
       } catch (err) {
-        res.status(400).json(err);
+        res.redirect(this.configService.get("REDIRECT_URI_ERROR"));
       }
     }
   }
