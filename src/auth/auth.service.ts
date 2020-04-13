@@ -11,6 +11,7 @@ import { IJwtPayload } from "./interfaces/JwtPayload.interface";
 import { MailerService } from "@nest-modules/mailer";
 import { ConfigService } from "../config/config.service";
 import { EmailTokenDto } from "./dto/email-confirm-query.dto";
+import { JwtPurposeType } from "../constants/JwtPurpose.enum";
 
 @Injectable()
 export class AuthService {
@@ -72,7 +73,7 @@ export class AuthService {
   async emailVerificationSend(user: User) {
     const token = await this.jwtService.signAsync({
       user_id: user.id,
-      purpose: PurposeType.EMAIL_VERIFICATION,
+      purpose: JwtPurposeType.EMAIL_VERIFICATION,
       exp: Math.floor(Date.now() / 1000) + 60 * 60
     });
 
@@ -91,7 +92,7 @@ export class AuthService {
   async emailConfirm(query: EmailTokenDto) {
     const jwtSign = await this.jwtService.verifyAsync(query.token);
 
-    if (jwtSign && jwtSign.purpose === PurposeType.EMAIL_VERIFICATION) {
+    if (jwtSign && jwtSign.purpose === JwtPurposeType.EMAIL_VERIFICATION) {
       const user = await this.userRepository.findOne({ id: jwtSign.user_id });
       if (!user && user.deleted_at) {
         throw makeError("USER_NOT_FOUND");
