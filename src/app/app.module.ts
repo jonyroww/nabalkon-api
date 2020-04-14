@@ -10,6 +10,7 @@ import path from "path";
 import appRootPath from "app-root-path";
 import { CategoriesModule } from "../categories/categories.module";
 import { AdImagesModule } from "../ad-images/ad-images.module";
+import { PhotosModule } from "../photos/photos.module";
 
 @Module({
   imports: [
@@ -32,7 +33,8 @@ import { AdImagesModule } from "../ad-images/ad-images.module";
     PhoneVerificationModule,
     AuthModule,
     CategoriesModule,
-    AdImagesModule
+    AdImagesModule,
+    PhotosModule
   ],
   controllers: [],
   providers: []
