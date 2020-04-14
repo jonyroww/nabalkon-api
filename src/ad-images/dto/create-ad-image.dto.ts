@@ -12,13 +12,13 @@ import { TransformInt } from "../../common/utils/transform-int.util";
 import { ApiProperty } from "@nestjs/swagger";
 
 export class CreateAdImageDto {
-  @ApiProperty({ type: "Date" })
+  @ApiProperty({ type: "number", example: 2 })
   @IsInt()
   @IsNumber()
   @Transform(TransformInt)
   ad_id: number;
 
-  @ApiProperty()
+  @ApiProperty({ type: "string" })
   @IsString()
   @IsUrl()
   image_url: string;
