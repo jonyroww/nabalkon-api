@@ -9,6 +9,7 @@ import { ConfigService } from "../config/config.service";
 import path from "path";
 import appRootPath from "app-root-path";
 import { CategoriesModule } from "../categories/categories.module";
+import { AdImagesModule } from "../ad-images/ad-images.module";
 
 @Module({
   imports: [
@@ -30,7 +31,8 @@ import { CategoriesModule } from "../categories/categories.module";
     ConfigModule,
     PhoneVerificationModule,
     AuthModule,
-    CategoriesModule
+    CategoriesModule,
+    AdImagesModule
   ],
   controllers: [],
   providers: []
