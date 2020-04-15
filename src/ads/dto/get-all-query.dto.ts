@@ -10,7 +10,7 @@ import {
   IsArray,
   IsDate,
   IsEnum,
-  IsJSON
+  IsJSON,
 } from "class-validator";
 import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
 import { Order } from "../../constants/Order.enum";
