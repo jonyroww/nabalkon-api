@@ -11,6 +11,7 @@ import {
 import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
 import { Ads } from "../../ads/entities/Ads.entity";
 import { PhoneVerification } from "../../phone-verification/entities/Phone-verification.entity";
+import { AdView } from "../../ad-views/entities/AdView.entity";
 
 @Entity({ name: "users" })
 export class User {
@@ -98,4 +99,12 @@ export class User {
     (ads: Ads) => ads.user_id
   )
   ad: Ads[];
+
+  @ApiProperty()
+  @OneToMany(
+    () => AdView,
+    (adView: AdView) => adView.user,
+    { eager: true }
+  )
+  views: AdView[];
 }
