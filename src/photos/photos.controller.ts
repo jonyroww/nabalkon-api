@@ -2,7 +2,7 @@ import {
   Controller,
   Post,
   UseInterceptors,
-  UploadedFile
+  UploadedFile,
 } from "@nestjs/common";
 import { FileInterceptor, MulterModule } from "@nestjs/platform-express";
 import { ApiOkResponse, ApiTags, ApiCreatedResponse } from "@nestjs/swagger";
@@ -24,8 +24,8 @@ export class PhotosController {
         filename: (req, file, callback) => {
           const filename = uuid() + "." + mime.getExtension(file.mimetype);
           callback(null, filename);
-        }
-      })
+        },
+      }),
     })
   )
   uploadPhoto(@UploadedFile() photo) {
