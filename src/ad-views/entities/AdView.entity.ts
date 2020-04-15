@@ -12,7 +12,7 @@ import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
 import { Ads } from "../../ads/entities/Ads.entity";
 import { User } from "../../users/entities/User.entity";
 
-@Entity({ name: "categories" })
+@Entity({ name: "ad_views" })
 export class AdView {
   @ApiProperty()
   @PrimaryColumn({

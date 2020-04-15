@@ -5,6 +5,7 @@ import {
   Post,
   Param,
   UseGuards,
+  Get,
 } from "@nestjs/common";
 import { AdViewsService } from "./ad-views.service";
 import { User } from "../users/entities/User.entity";
@@ -16,10 +17,10 @@ import {
   ApiBearerAuth,
 } from "@nestjs/swagger";
 import { GetUser } from "../common/decorators/get-user.decorator";
-import { CreateAdViewParamsDto } from "./dto/ad-id.dto";
+import { AdIdDto } from "./dto/ad-id.dto";
 
 @UsePipes(new ValidationPipe({ transform: true, whitelist: true }))
-@Controller("ad-views")
+@Controller()
 export class AdViewsController {
   constructor(private adViewsService: AdViewsService) {}
 
@@ -28,7 +29,14 @@ export class AdViewsController {
   @UseGuards(AuthGuard("jwt"))
   @ApiBearerAuth()
   @Post("ads/:adId/views")
-  createAdView(@GetUser() user: User, @Param() params: CreateAdViewParamsDto) {
+  createAdView(@GetUser() user: User, @Param() params: AdIdDto) {
     return this.adViewsService.createAdView(user, params);
+  }
+
+  @ApiTags("Ad views")
+  @ApiCreatedResponse()
+  @Get("ads/:adId/views")
+  getAdViews(@Param() params: AdIdDto) {
+    return this.adViewsService.getAdViews(params);
   }
 }
