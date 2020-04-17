@@ -10,7 +10,9 @@ import path from "path";
 import appRootPath from "app-root-path";
 import { CategoriesModule } from "../categories/categories.module";
 import { AdImagesModule } from "../ad-images/ad-images.module";
+
 import { AdViewsModule } from "../ad-views/ad-views.module";
+
 
 @Module({
   imports: [
@@ -34,7 +36,10 @@ import { AdViewsModule } from "../ad-views/ad-views.module";
     AuthModule,
     CategoriesModule,
     AdImagesModule,
+
     AdViewsModule,
+
+
   ],
   controllers: [],
   providers: [],
