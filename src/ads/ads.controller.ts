@@ -22,9 +22,11 @@ import { GetAllQueryDto } from "./dto/get-all-query.dto";
 import { User } from "../users/entities/User.entity";
 import { GetUser } from "../common/decorators/get-user.decorator";
 import { AdIdDto } from "./dto/ad-id.dto";
+import { UserIdDto } from "./dto/user-id.dto";
+import { UserWriteAccessGuard } from "src/common/guards/read-access.guard";
 
 @UsePipes(new ValidationPipe({ transform: true, whitelist: true }))
-@Controller("ads")
+@Controller()
 export class AdsController {
   constructor(private adsService: AdsService) {}
 
@@ -32,22 +34,31 @@ export class AdsController {
   @ApiCreatedResponse()
   @UseGuards(AuthGuard("jwt"))
   @ApiBearerAuth()
-  @Post()
+  @Post("/ads")
   createAd(@Body() body: CreateAdDto, @GetUser() user: User) {
     return this.adsService.createAd(body, user);
   }
 
   @ApiTags("Ads")
   @ApiOkResponse()
-  @Get()
+  @Get("/ads")
   getAllAds(@Query() query: GetAllQueryDto) {
     return this.adsService.getAllAds(query);
   }
 
   @ApiTags("Ads")
   @ApiOkResponse()
-  @Get("/:adId")
+  @Get("/ads/:adId")
   getOneAd(@Param() params: AdIdDto) {
     return this.adsService.getOneAd(params);
+  }
+
+  @ApiTags("Ads")
+  @ApiOkResponse()
+  @UseGuards(AuthGuard("jwt"), UserWriteAccessGuard)
+  @ApiBearerAuth()
+  @Get("/users/:userId/ads")
+  getUsersAds(@Param() params: UserIdDto) {
+    return this.adsService.getUsersAds(params);
   }
 }

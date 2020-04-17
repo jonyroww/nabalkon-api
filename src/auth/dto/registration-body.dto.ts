@@ -4,10 +4,12 @@ import {
   IsString,
   IsNumber,
   IsAlphanumeric,
+  IsEnum,
 } from "class-validator";
 import { Transform } from "class-transformer";
 import { TransformInt } from "../../common/utils/transform-int.util";
 import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
+import { RoleName } from "src/constants/RoleName.enum";
 
 export class RegistrationBodyDto {
   @ApiProperty({ type: "number" })

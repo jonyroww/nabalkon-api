@@ -12,6 +12,7 @@ import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
 import { Ads } from "../../ads/entities/Ads.entity";
 import { PhoneVerification } from "../../phone-verification/entities/Phone-verification.entity";
 import { AdView } from "../../ad-views/entities/AdView.entity";
+import { RoleName } from "../../constants/RoleName.enum";
 
 @Entity({ name: "users" })
 export class User {
@@ -62,6 +63,10 @@ export class User {
   @ApiPropertyOptional({ type: "string" })
   @Column({ type: "varchar", unique: true })
   email: string;
+
+  @ApiPropertyOptional({ enum: RoleName })
+  @Column("enum", { enum: RoleName, nullable: false })
+  role: RoleName;
 
   @ApiPropertyOptional({ type: "boolean" })
   @Column({ type: "boolean" })
