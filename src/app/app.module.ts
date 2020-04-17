@@ -10,22 +10,24 @@ import path from "path";
 import appRootPath from "app-root-path";
 import { CategoriesModule } from "../categories/categories.module";
 import { AdImagesModule } from "../ad-images/ad-images.module";
-import { PhotosModule } from "../photos/photos.module";
+
+import { AdViewsModule } from "../ad-views/ad-views.module";
+
 
 @Module({
   imports: [
     MailerModule.forRootAsync({
       useFactory: (configService: ConfigService) => ({
         defaults: {
-          from: configService.get("EMAIL_FROM")
+          from: configService.get("EMAIL_FROM"),
         },
         transport: configService.get("SMTP_URL"),
         template: {
           dir: path.join(appRootPath.toString(), "templates"),
-          adapter: new HandlebarsAdapter()
-        }
+          adapter: new HandlebarsAdapter(),
+        },
       }),
-      inject: [ConfigService]
+      inject: [ConfigService],
     }),
     TypeOrmModule.forRoot(),
     AdsModule,
@@ -34,9 +36,12 @@ import { PhotosModule } from "../photos/photos.module";
     AuthModule,
     CategoriesModule,
     AdImagesModule,
-    PhotosModule
+
+    AdViewsModule,
+
+
   ],
   controllers: [],
-  providers: []
+  providers: [],
 })
 export class AppModule {}
