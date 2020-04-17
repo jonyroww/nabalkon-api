@@ -23,7 +23,8 @@ export const errors = {
   REQUEST_ALREADY_IN_PROGRESS: HttpStatus.BAD_REQUEST,
   TYPE_WAS_DELETED: HttpStatus.NOT_FOUND,
   REQUEST_MUST_BE_IN_PROGRESS: HttpStatus.BAD_REQUEST,
-  EMAIL_ALREADY_CONFIRMED: HttpStatus.BAD_REQUEST
+  EMAIL_ALREADY_CONFIRMED: HttpStatus.BAD_REQUEST,
+  AD_NOT_ACTIVATED_OR_WAS_DELETED: HttpStatus.NOT_FOUND,
 };
 
 export type ErrorCode = keyof typeof errors;
@@ -35,7 +36,7 @@ export const makeError = (code: ErrorCode, additional: object = {}) => {
     {
       statusCode: status,
       code,
-      ...additional
+      ...additional,
     },
     status
   );

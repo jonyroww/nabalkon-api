@@ -6,7 +6,7 @@ import {
   ManyToMany,
   JoinTable,
   ManyToOne,
-  JoinColumn
+  JoinColumn,
 } from "typeorm";
 import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
 import { Category } from "../../categories/entities/Category.entity";
@@ -14,6 +14,7 @@ import { AdsState } from "../../constants/AdsState.enum";
 import { AdsTransferMode } from "../../constants/AdsTransferMode.enum";
 import { AdsStatus } from "../../constants/AdsStatus.enum";
 import { User } from "../../users/entities/User.entity";
+import { AdView } from "../../ad-views/entities/AdView.entity";
 
 @Entity({ name: "ads" })
 export class Ads {
@@ -21,18 +22,18 @@ export class Ads {
   @PrimaryColumn({
     type: "int",
     generated: true,
-    readonly: true
+    readonly: true,
   })
   id: number;
 
   @ApiProperty({
     type: "string",
     example: "2019-11-22T16:03:05Z",
-    nullable: false
+    nullable: false,
   })
   @Column({
     nullable: false,
-    type: "timestamp with time zone"
+    type: "timestamp with time zone",
   })
   created_at: Date;
 
@@ -54,7 +55,7 @@ export class Ads {
 
   @ApiPropertyOptional()
   @Column("enum", {
-    enum: AdsState
+    enum: AdsState,
   })
   state: AdsState;
 
@@ -68,7 +69,7 @@ export class Ads {
 
   @ApiPropertyOptional()
   @Column({
-    type: "text"
+    type: "text",
   })
   title: string;
 
@@ -82,19 +83,19 @@ export class Ads {
 
   @ApiPropertyOptional()
   @Column("enum", {
-    enum: AdsTransferMode
+    enum: AdsTransferMode,
   })
   transfer_mode: AdsTransferMode;
 
   @ApiPropertyOptional()
   @Column({
-    type: "varchar"
+    type: "varchar",
   })
   deal_address: string;
 
   @ApiPropertyOptional()
   @Column({
-    type: "json"
+    type: "json",
   })
   deal_coordinates: JSON;
 
@@ -124,7 +125,7 @@ export class Ads {
 
   @ApiPropertyOptional()
   @Column("enum", {
-    enum: AdsStatus
+    enum: AdsStatus,
   })
   status: AdsStatus;
 
@@ -143,4 +144,12 @@ export class Ads {
   )
   @JoinColumn({ name: "user_id" })
   user: User;
+
+  @ApiProperty()
+  @OneToMany(
+    () => AdView,
+    (adView: AdView) => adView.ad,
+    { eager: true }
+  )
+  views: AdView[];
 }
