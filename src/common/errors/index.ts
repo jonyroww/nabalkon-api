@@ -25,6 +25,7 @@ export const errors = {
   REQUEST_MUST_BE_IN_PROGRESS: HttpStatus.BAD_REQUEST,
   EMAIL_ALREADY_CONFIRMED: HttpStatus.BAD_REQUEST,
   AD_NOT_ACTIVATED_OR_WAS_DELETED: HttpStatus.NOT_FOUND,
+  NO_SUCH_AD: HttpStatus.NOT_FOUND,
 };
 
 export type ErrorCode = keyof typeof errors;

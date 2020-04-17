@@ -21,6 +21,7 @@ import { CreateAdDto } from "./dto/create-ad.dto";
 import { GetAllQueryDto } from "./dto/get-all-query.dto";
 import { User } from "../users/entities/User.entity";
 import { GetUser } from "../common/decorators/get-user.decorator";
+import { AdIdDto } from "./dto/ad-id.dto";
 
 @UsePipes(new ValidationPipe({ transform: true, whitelist: true }))
 @Controller("ads")
@@ -41,5 +42,12 @@ export class AdsController {
   @Get()
   getAllAds(@Query() query: GetAllQueryDto) {
     return this.adsService.getAllAds(query);
+  }
+
+  @ApiTags("Ads")
+  @ApiOkResponse()
+  @Get("/:adId")
+  getOneAd(@Param() params: AdIdDto) {
+    return this.adsService.getOneAd(params);
   }
 }

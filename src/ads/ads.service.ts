@@ -7,6 +7,8 @@ import { AdsTransferMode } from "../constants/AdsTransferMode.enum";
 import { GetAllQueryDto } from "./dto/get-all-query.dto";
 import { Order } from "../constants/Order.enum";
 import { User } from "../users/entities/User.entity";
+import { AdIdDto } from "./dto/ad-id.dto";
+import { makeError } from "src/common/errors";
 
 @Injectable()
 export class AdsService {
@@ -66,5 +68,13 @@ export class AdsService {
       .offset(query.offset)
       .getManyAndCount();
     return { total: total, data: data };
+  }
+
+  async getOneAd(params: AdIdDto) {
+    const ad = await this.adsRepository.findOne({ id: params.adId });
+    if (!ad || ad.deleted_at) {
+      throw makeError("NO_SUCH_AD");
+    }
+    return ad;
   }
 }
