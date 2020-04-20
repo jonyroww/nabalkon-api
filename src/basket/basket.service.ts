@@ -1,10 +1,11 @@
 import { Injectable } from "@nestjs/common";
 import { UserBasketAdsRepository } from "./repositories/Basket.repository";
 import { AdIdDto } from "./dto/ad-id.dto";
-import { CreateUsersBasketDto } from "./dto/create-users-basket-ad.dto";
+import { UserIdDto } from "./dto/user-id.dto";
 import { AdsRepository } from "../ads/repositories/ads.repository";
 import { AdsStatus } from "../constants/AdsStatus.enum";
 import { makeError } from "src/common/errors";
+import { DeleteUsersBasketDto } from "./dto/delete-ad-params.dto";
 
 @Injectable()
 export class BasketService {
@@ -13,7 +14,7 @@ export class BasketService {
     private adsRepository: AdsRepository
   ) {}
 
-  async createUsersBasketAd(params: CreateUsersBasketDto, body: AdIdDto) {
+  async createUsersBasketAd(params: UserIdDto, body: AdIdDto) {
     const adInBasket = await this.userBasketAdsRepository.find({
       where: { user_id: params.userId, ad_id: body.adId },
     });
@@ -34,6 +35,32 @@ export class BasketService {
       userBasketAd.ad_id = body.adId;
       await this.userBasketAdsRepository.save(userBasketAd);
       return userBasketAd;
+    }
+  }
+
+  async getUsersBasketAd(params: UserIdDto) {
+    const ads = await this.userBasketAdsRepository.find({
+      where: { user_id: params.userId },
+    });
+    const adIds = ads.map((ad) => ad.ad_id);
+    const qb = this.adsRepository.createQueryBuilder("ads");
+    qb.where("ads.id IN (:...adIds)", { adIds: adIds });
+    const [data, total] = await qb
+      .limit(params.limit)
+      .offset(params.offset)
+      .getManyAndCount();
+    return { total: total, data: data };
+  }
+
+  async deleteUsersBasketAd(params: DeleteUsersBasketDto) {
+    const ad = await this.userBasketAdsRepository.findOne({
+      where: { user_id: params.userId, ad_id: params.adId },
+    });
+    if (ad) {
+      await this.userBasketAdsRepository.delete({ id: ad.id });
+      return;
+    } else {
+      throw makeError("NO_SUCH_AD");
     }
   }
 }

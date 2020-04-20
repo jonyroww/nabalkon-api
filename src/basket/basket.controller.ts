@@ -1,5 +1,13 @@
-import { Controller, UseGuards, Post, Body, Param } from "@nestjs/common";
-import { CreateUsersBasketDto } from "./dto/create-users-basket-ad.dto";
+import {
+  Controller,
+  UseGuards,
+  Post,
+  Body,
+  Param,
+  Delete,
+  Get,
+} from "@nestjs/common";
+import { UserIdDto } from "./dto/user-id.dto";
 import {
   ApiOkResponse,
   ApiTags,
@@ -12,6 +20,7 @@ import { User } from "../users/entities/User.entity";
 import { GetUser } from "../common/decorators/get-user.decorator";
 import { AdIdDto } from "./dto/ad-id.dto";
 import { UserWriteAccessGuard } from "../common/guards/read-access.guard";
+import { DeleteUsersBasketDto } from "./dto/delete-ad-params.dto";
 
 @Controller()
 export class BasketController {
@@ -22,7 +31,25 @@ export class BasketController {
   @UseGuards(AuthGuard("jwt"), UserWriteAccessGuard)
   @ApiBearerAuth()
   @Post("/users/:userId/basket/ads")
-  createAd(@Param() params: CreateUsersBasketDto, @Body() body: AdIdDto) {
+  createUsersBasketAd(@Param() params: UserIdDto, @Body() body: AdIdDto) {
     return this.basketService.createUsersBasketAd(params, body);
+  }
+
+  @ApiTags("Basket")
+  @ApiCreatedResponse()
+  @UseGuards(AuthGuard("jwt"), UserWriteAccessGuard)
+  @ApiBearerAuth()
+  @Get("/users/:userId/basket/ads")
+  getAdsBasket(@Param() params: UserIdDto) {
+    return this.basketService.getUsersBasketAd(params);
+  }
+
+  @ApiTags("Basket")
+  @ApiCreatedResponse()
+  @UseGuards(AuthGuard("jwt"), UserWriteAccessGuard)
+  @ApiBearerAuth()
+  @Delete("/users/:userId/basket/ads/:adId")
+  deleteUsersBasketAd(@Param() params: DeleteUsersBasketDto) {
+    return this.basketService.deleteUsersBasketAd(params);
   }
 }
