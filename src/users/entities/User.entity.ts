@@ -112,4 +112,17 @@ export class User {
     { eager: true }
   )
   views: AdView[];
+
+  @ApiPropertyOptional({ type: () => Ads })
+  @ManyToMany(
+    () => Ads,
+    (ad: Ads) => ad.id,
+    { eager: true }
+  )
+  @JoinTable({
+    name: "user_basket_ads",
+    joinColumn: { name: "user_id", referencedColumnName: "id" },
+    inverseJoinColumn: { name: "ad_id", referencedColumnName: "id" },
+  })
+  ads_in_basket: Ads[];
 }
