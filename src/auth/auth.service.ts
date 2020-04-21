@@ -12,6 +12,7 @@ import { MailerService } from "@nest-modules/mailer";
 import { ConfigService } from "../config/config.service";
 import { EmailTokenDto } from "./dto/email-confirm-query.dto";
 import { JwtPurposeType } from "../constants/JwtPurpose.enum";
+import { RoleName } from "src/constants/RoleName.enum";
 
 @Injectable()
 export class AuthService {
@@ -40,7 +41,7 @@ export class AuthService {
       throw makeError("VERIFICATION_ALREADY_USED");
     }
     const isPhoneUnique = await this.userRepository.findOne({
-      phone: phoneVerification.phone
+      phone: phoneVerification.phone,
     });
     if (isPhoneUnique) {
       throw makeError("PHONE_ALREADY_EXISTS");
@@ -51,12 +52,13 @@ export class AuthService {
     const user = this.userRepository.create(body);
     user.phone_confirmed = true;
     user.phone = phoneVerification.phone;
+    user.role = RoleName.USER;
     phoneVerification.used = true;
     await this.phoneVerificationRepository.save(phoneVerification);
     await this.userRepository.save(user);
     const token = await this.jwtService.signAsync({
       sub: user.id,
-      exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 7
+      exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 7,
     });
     return { token: token };
   }
@@ -64,17 +66,17 @@ export class AuthService {
   async userLogin(user: User) {
     const payload: IJwtPayload = {
       sub: user.id,
-      exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 7
+      exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24 * 7,
     };
     return {
-      token: await this.jwtService.signAsync(payload)
+      token: await this.jwtService.signAsync(payload),
     };
   }
   async emailVerificationSend(user: User) {
     const token = await this.jwtService.signAsync({
       user_id: user.id,
       purpose: JwtPurposeType.EMAIL_VERIFICATION,
-      exp: Math.floor(Date.now() / 1000) + 60 * 60
+      exp: Math.floor(Date.now() / 1000) + 60 * 60,
     });
 
     await this.mailerService.sendMail({
@@ -84,8 +86,8 @@ export class AuthService {
       context: {
         link: `${this.configService.get(
           "BASE_URL"
-        )}/auth/email-confirm?token=${encodeURIComponent(token)}`
-      }
+        )}/auth/email-confirm?token=${encodeURIComponent(token)}`,
+      },
     });
   }
 

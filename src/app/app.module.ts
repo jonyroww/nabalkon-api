@@ -10,9 +10,9 @@ import path from "path";
 import appRootPath from "app-root-path";
 import { CategoriesModule } from "../categories/categories.module";
 import { AdImagesModule } from "../ad-images/ad-images.module";
-
+import { PhotosModule } from "../photos/photos.module";
 import { AdViewsModule } from "../ad-views/ad-views.module";
-
+import { BasketModule } from "../basket/basket.module";
 
 @Module({
   imports: [
@@ -36,10 +36,9 @@ import { AdViewsModule } from "../ad-views/ad-views.module";
     AuthModule,
     CategoriesModule,
     AdImagesModule,
-
+    PhotosModule,
     AdViewsModule,
-
-
+    BasketModule,
   ],
   controllers: [],
   providers: [],

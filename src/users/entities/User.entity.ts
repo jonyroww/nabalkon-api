@@ -7,11 +7,15 @@ import {
   JoinTable,
   Index,
   OneToOne,
+  ManyToOne,
+  JoinColumn,
 } from "typeorm";
 import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
 import { Ads } from "../../ads/entities/Ads.entity";
 import { PhoneVerification } from "../../phone-verification/entities/Phone-verification.entity";
 import { AdView } from "../../ad-views/entities/AdView.entity";
+import { RoleName } from "../../constants/RoleName.enum";
+import { UserBasketAds } from "../../basket/entities/Basket.entity";
 
 @Entity({ name: "users" })
 export class User {
@@ -63,6 +67,10 @@ export class User {
   @Column({ type: "varchar", unique: true })
   email: string;
 
+  @ApiPropertyOptional({ enum: RoleName })
+  @Column("enum", { enum: RoleName, nullable: false })
+  role: RoleName;
+
   @ApiPropertyOptional({ type: "boolean" })
   @Column({ type: "boolean" })
   email_confirmed: boolean;
@@ -107,4 +115,24 @@ export class User {
     { eager: true }
   )
   views: AdView[];
+
+  @ApiPropertyOptional({ type: () => Ads })
+  @ManyToMany(
+    () => Ads,
+    (ad: Ads) => ad.id,
+    { eager: true }
+  )
+  @JoinTable({
+    name: "user_basket_ads",
+    joinColumn: { name: "user_id", referencedColumnName: "id" },
+    inverseJoinColumn: { name: "ad_id", referencedColumnName: "id" },
+  })
+  ads_in_basket: Ads[];
+
+  @ApiProperty()
+  @OneToMany(
+    () => UserBasketAds,
+    (userBasketAds: UserBasketAds) => userBasketAds.user_id
+  )
+  user_basket_ads: UserBasketAds[];
 }
