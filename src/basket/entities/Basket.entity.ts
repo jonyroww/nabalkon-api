@@ -40,4 +40,20 @@ export class UserBasketAds {
   @ApiPropertyOptional({ type: "int" })
   @Column({ type: "int" })
   ad_id: number;
+
+  @ApiProperty()
+  @ManyToOne(
+    () => User,
+    (user: User) => user.user_basket_ads
+  )
+  @JoinColumn({ name: "user_id" })
+  user: User;
+
+  @ApiProperty()
+  @ManyToOne(
+    () => Ads,
+    (ad: Ads) => ad.user_basket_ads
+  )
+  @JoinColumn({ name: "ad_id" })
+  ad: Ads;
 }

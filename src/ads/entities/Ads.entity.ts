@@ -15,6 +15,7 @@ import { AdsTransferMode } from "../../constants/AdsTransferMode.enum";
 import { AdsStatus } from "../../constants/AdsStatus.enum";
 import { User } from "../../users/entities/User.entity";
 import { AdView } from "../../ad-views/entities/AdView.entity";
+import { UserBasketAds } from "../../basket/entities/Basket.entity";
 
 @Entity({ name: "ads" })
 export class Ads {
@@ -152,4 +153,11 @@ export class Ads {
     { eager: true }
   )
   views: AdView[];
+
+  @ApiProperty()
+  @OneToMany(
+    () => UserBasketAds,
+    (userBasketAds: UserBasketAds) => userBasketAds.ad_id
+  )
+  user_basket_ads: UserBasketAds[];
 }

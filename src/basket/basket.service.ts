@@ -6,6 +6,8 @@ import { AdsRepository } from "../ads/repositories/ads.repository";
 import { AdsStatus } from "../constants/AdsStatus.enum";
 import { makeError } from "src/common/errors";
 import { DeleteUsersBasketDto } from "./dto/delete-ad-params.dto";
+import { SortQueryDto } from "./dto/query.dto";
+import { Order } from "../constants/Order.enum";
 
 @Injectable()
 export class BasketService {
@@ -38,7 +40,7 @@ export class BasketService {
     }
   }
 
-  async getUsersBasketAd(params: UserIdDto) {
+  async getUsersBasketAd(params: UserIdDto, query: SortQueryDto) {
     const ads = await this.userBasketAdsRepository.find({
       where: { user_id: params.userId },
     });
@@ -48,6 +50,9 @@ export class BasketService {
     qb.andWhere("ads.deleted_at is null");
     qb.andWhere("ads.active_until > NOW()");
     qb.andWhere("ads.status = :status", { status: AdsStatus.ACTIVE });
+    if (query.sort && query.order) {
+      qb.orderBy(query.sort, query.order || Order.ASC);
+    }
     const [data, total] = await qb
       .limit(params.limit)
       .offset(params.offset)

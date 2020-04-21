@@ -6,6 +6,7 @@ import {
   Param,
   Delete,
   Get,
+  Query,
 } from "@nestjs/common";
 import { UserIdDto } from "./dto/user-id.dto";
 import {
@@ -21,6 +22,7 @@ import { GetUser } from "../common/decorators/get-user.decorator";
 import { AdIdDto } from "./dto/ad-id.dto";
 import { UserWriteAccessGuard } from "../common/guards/read-access.guard";
 import { DeleteUsersBasketDto } from "./dto/delete-ad-params.dto";
+import { SortQueryDto } from "./dto/query.dto";
 
 @Controller()
 export class BasketController {
@@ -40,8 +42,8 @@ export class BasketController {
   @UseGuards(AuthGuard("jwt"), UserWriteAccessGuard)
   @ApiBearerAuth()
   @Get("/users/:userId/basket/ads")
-  getAdsBasket(@Param() params: UserIdDto) {
-    return this.basketService.getUsersBasketAd(params);
+  getAdsBasket(@Param() params: UserIdDto, @Query() query: SortQueryDto) {
+    return this.basketService.getUsersBasketAd(params, query);
   }
 
   @ApiTags("Basket")
