@@ -45,6 +45,9 @@ export class BasketService {
     const adIds = ads.map((ad) => ad.ad_id);
     const qb = this.adsRepository.createQueryBuilder("ads");
     qb.where("ads.id IN (:...adIds)", { adIds: adIds });
+    qb.andWhere("ads.deleted_at is null");
+    qb.andWhere("ads.active_until > NOW()");
+    qb.andWhere("ads.status = :status", { status: AdsStatus.ACTIVE });
     const [data, total] = await qb
       .limit(params.limit)
       .offset(params.offset)
