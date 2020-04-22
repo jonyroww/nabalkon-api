@@ -135,12 +135,10 @@ export class User {
   )
   user_basket_ads: UserBasketAds[];
 
-  /*
   @ApiPropertyOptional({ type: () => User })
   @ManyToMany(
     () => User,
-    (user: User) => user.id,
-    { eager: true }
+    (user: User) => user.id
   )
   @JoinTable({
     name: "favorite_sellers",
@@ -148,5 +146,4 @@ export class User {
     inverseJoinColumn: { name: "seller_id", referencedColumnName: "id" },
   })
   favorite_sellers: User[];
-  */
 }
