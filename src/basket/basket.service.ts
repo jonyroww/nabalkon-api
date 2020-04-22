@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { UserBasketAdsRepository } from "./repositories/Basket.repository";
 import { AdIdDto } from "./dto/ad-id.dto";
-import { UserIdDto } from "./dto/user-id.dto";
+import { UserIdDto } from "../common/dto/user-id.dto";
 import { AdsRepository } from "../ads/repositories/ads.repository";
 import { AdsStatus } from "../constants/AdsStatus.enum";
 import { makeError } from "src/common/errors";

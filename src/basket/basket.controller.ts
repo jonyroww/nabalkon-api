@@ -7,8 +7,10 @@ import {
   Delete,
   Get,
   Query,
+  UsePipes,
+  ValidationPipe,
 } from "@nestjs/common";
-import { UserIdDto } from "./dto/user-id.dto";
+import { UserIdDto } from "../common/dto/user-id.dto";
 import {
   ApiOkResponse,
   ApiTags,
@@ -24,6 +26,7 @@ import { UserWriteAccessGuard } from "../common/guards/read-access.guard";
 import { DeleteUsersBasketDto } from "./dto/delete-ad-params.dto";
 import { SortQueryDto } from "./dto/query.dto";
 
+@UsePipes(new ValidationPipe({ transform: true, whitelist: true }))
 @Controller()
 export class BasketController {
   constructor(private basketService: BasketService) {}
