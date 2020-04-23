@@ -13,6 +13,7 @@ import { AdImagesModule } from "../ad-images/ad-images.module";
 import { PhotosModule } from "../photos/photos.module";
 import { AdViewsModule } from "../ad-views/ad-views.module";
 import { BasketModule } from "../basket/basket.module";
+import { FavoriteSellersModule } from "src/favorite-sellers/favorite-sellers.module";
 
 @Module({
   imports: [
@@ -39,6 +40,7 @@ import { BasketModule } from "../basket/basket.module";
     PhotosModule,
     AdViewsModule,
     BasketModule,
+    FavoriteSellersModule,
   ],
   controllers: [],
   providers: [],

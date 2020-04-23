@@ -27,6 +27,7 @@ export const errors = {
   AD_NOT_ACTIVATED_OR_WAS_DELETED: HttpStatus.NOT_FOUND,
   NO_SUCH_AD: HttpStatus.NOT_FOUND,
   AD_ALREADY_ADDED: HttpStatus.BAD_REQUEST,
+  SELLER_ALREADY_ADDED: HttpStatus.BAD_REQUEST,
 };
 
 export type ErrorCode = keyof typeof errors;

@@ -7,8 +7,6 @@ import {
   JoinTable,
   Index,
   OneToOne,
-  ManyToOne,
-  JoinColumn,
 } from "typeorm";
 import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
 import { Ads } from "../../ads/entities/Ads.entity";
@@ -16,6 +14,7 @@ import { PhoneVerification } from "../../phone-verification/entities/Phone-verif
 import { AdView } from "../../ad-views/entities/AdView.entity";
 import { RoleName } from "../../constants/RoleName.enum";
 import { UserBasketAds } from "../../basket/entities/Basket.entity";
+import { FavoriteSeller } from "../../favorite-sellers/entities/favorite-seller.entity";
 
 @Entity({ name: "users" })
 export class User {
@@ -135,4 +134,16 @@ export class User {
     (userBasketAds: UserBasketAds) => userBasketAds.user_id
   )
   user_basket_ads: UserBasketAds[];
+
+  @ApiPropertyOptional({ type: () => User })
+  @ManyToMany(
+    () => User,
+    (user: User) => user.id
+  )
+  @JoinTable({
+    name: "favorite_sellers",
+    joinColumn: { name: "user_id", referencedColumnName: "id" },
+    inverseJoinColumn: { name: "seller_id", referencedColumnName: "id" },
+  })
+  favorite_sellers: User[];
 }
