@@ -12,8 +12,8 @@ import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
 import { User } from "../../users/entities/User.entity";
 import { Ads } from "../../ads/entities/Ads.entity";
 
-@Entity("favorite_sellers")
-export class FavoriteSeller {
+@Entity("favorite_ads_groups")
+export class FavoriteAdGroup {
   @ApiProperty()
   @PrimaryColumn({
     type: "int",
@@ -35,7 +35,7 @@ export class FavoriteSeller {
 
   @ApiProperty({ type: "int" })
   @Column({ type: "int" })
-  ad_id: number;
+  user_id: number;
 
   @ApiProperty({ type: "string" })
   @Column({ type: "varchar" })
