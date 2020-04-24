@@ -160,4 +160,16 @@ export class Ads {
     (userBasketAds: UserBasketAds) => userBasketAds.ad_id
   )
   user_basket_ads: UserBasketAds[];
+
+  @ApiPropertyOptional({ type: () => User })
+  @ManyToMany(
+    () => User,
+    (user: User) => user.favorite_ads
+  )
+  @JoinTable({
+    name: "favorite_ads",
+    joinColumn: { name: "user_id", referencedColumnName: "id" },
+    inverseJoinColumn: { name: "ad_id", referencedColumnName: "id" },
+  })
+  users_added_to_favorite: User[];
 }

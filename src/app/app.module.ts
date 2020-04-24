@@ -14,6 +14,8 @@ import { PhotosModule } from "../photos/photos.module";
 import { AdViewsModule } from "../ad-views/ad-views.module";
 import { BasketModule } from "../basket/basket.module";
 import { FavoriteSellersModule } from "src/favorite-sellers/favorite-sellers.module";
+import { FavoriteAdsModule } from "../favorite-ads/favorite-ads.module";
+import { FavoriteAdsGroupModule } from "../favorite-ads-group/favorite-ads-group.module";
 
 @Module({
   imports: [
@@ -41,6 +43,8 @@ import { FavoriteSellersModule } from "src/favorite-sellers/favorite-sellers.mod
     AdViewsModule,
     BasketModule,
     FavoriteSellersModule,
+    FavoriteAdsModule,
+    FavoriteAdsGroupModule,
   ],
   controllers: [],
   providers: [],
