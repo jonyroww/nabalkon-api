@@ -4,7 +4,7 @@ import bcrypt from 'bcrypt';
 import { UserRepository } from '../users/repositories/User.repository';
 import { RegistrationBodyDto } from './dto/registration-body.dto';
 import { PhoneVerificationRepository } from '../phone-verification/repositories/Phone-verification.repository';
-import { PurposeType } from 'src/constants/PurposeType.enum';
+import { PurposeType } from '../constants/PurposeType.enum';
 import { JwtService } from '@nestjs/jwt';
 import { User } from '../users/entities/User.entity';
 import { IJwtPayload } from './interfaces/JwtPayload.interface';
@@ -12,7 +12,7 @@ import { MailerService } from '@nest-modules/mailer';
 import { ConfigService } from '../config/config.service';
 import { EmailTokenDto } from './dto/email-confirm-query.dto';
 import { JwtPurposeType } from '../constants/JwtPurpose.enum';
-import { RoleName } from 'src/constants/RoleName.enum';
+import { RoleName } from '../constants/RoleName.enum';
 
 @Injectable()
 export class AuthService {

@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { FavoriteSellerRepository } from './repositories/favorite-seller.repository';
-import { UserIdDto } from 'src/common/dto/user-id.dto';
+import { UserIdDto } from '../common/dto/user-id.dto';
 import { SellerIdDto } from './dto/create-favorite-seller-body.dto';
 import { makeError } from '../common/errors/index';
 import { UserRepository } from '../users/repositories/User.repository';

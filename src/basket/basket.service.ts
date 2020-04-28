@@ -4,7 +4,7 @@ import { AdIdDto } from './dto/ad-id.dto';
 import { UserIdDto } from '../common/dto/user-id.dto';
 import { AdsRepository } from '../ads/repositories/ads.repository';
 import { AdsStatus } from '../constants/AdsStatus.enum';
-import { makeError } from 'src/common/errors';
+import { makeError } from '../common/errors';
 import { DeleteUsersBasketDto } from './dto/delete-ad-params.dto';
 import { SortQueryDto } from './dto/query.dto';
 import { Order } from '../constants/Order.enum';

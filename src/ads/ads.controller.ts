@@ -23,7 +23,7 @@ import { User } from '../users/entities/User.entity';
 import { GetUser } from '../common/decorators/get-user.decorator';
 import { AdIdDto } from './dto/ad-id.dto';
 import { UserIdDto } from './dto/user-id.dto';
-import { UserWriteAccessGuard } from 'src/common/guards/read-access.guard';
+import { UserWriteAccessGuard } from '../common/guards/read-access.guard';
 
 @UsePipes(new ValidationPipe({ transform: true, whitelist: true }))
 @Controller()

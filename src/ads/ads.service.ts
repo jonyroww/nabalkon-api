@@ -6,7 +6,7 @@ import { GetAllQueryDto } from './dto/get-all-query.dto';
 import { Order } from '../constants/Order.enum';
 import { User } from '../users/entities/User.entity';
 import { AdIdDto } from './dto/ad-id.dto';
-import { makeError } from 'src/common/errors';
+import { makeError } from '../common/errors';
 import { UserIdDto } from './dto/user-id.dto';
 
 @Injectable()

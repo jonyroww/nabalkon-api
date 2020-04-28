@@ -5,7 +5,7 @@ import { ConfigService } from '../config/config.service';
 import cryptoRandomString from 'crypto-random-string';
 import { makeError } from '../common/errors/index';
 import axios from 'axios';
-import { PurposeType } from 'src/constants/PurposeType.enum';
+import { PurposeType } from '../constants/PurposeType.enum';
 import { UserRepository } from '../users/repositories/User.repository';
 import { VerificationPhoneDto } from './dto/verification-phone.dto';
 import { PhoneVerificationIdDto } from './dto/phone-verification-id.dto';
