@@ -3,34 +3,34 @@ import {
   Post,
   UseInterceptors,
   UploadedFile,
-} from "@nestjs/common";
-import { FileInterceptor, MulterModule } from "@nestjs/platform-express";
-import { ApiOkResponse, ApiTags, ApiCreatedResponse } from "@nestjs/swagger";
-import { ConfigService } from "../config/config.service";
-import multer from "multer";
-import uuid from "uuid/v4";
-import mime from "mime";
+} from '@nestjs/common';
+import { FileInterceptor, MulterModule } from '@nestjs/platform-express';
+import { ApiOkResponse, ApiTags, ApiCreatedResponse } from '@nestjs/swagger';
+import { ConfigService } from '../config/config.service';
+import multer from 'multer';
+import uuid from 'uuid/v4';
+import mime from 'mime';
 
-@Controller("upload-photo")
+@Controller('upload-photo')
 export class PhotosController {
   constructor(private readonly configService: ConfigService) {}
-  @ApiTags("Photos")
+  @ApiTags('Photos')
   @ApiCreatedResponse()
   @Post()
   @UseInterceptors(
-    FileInterceptor("photo", {
+    FileInterceptor('photo', {
       storage: multer.diskStorage({
-        destination: "photos",
+        destination: 'photos',
         filename: (req, file, callback) => {
-          const filename = uuid() + "." + mime.getExtension(file.mimetype);
+          const filename = uuid() + '.' + mime.getExtension(file.mimetype);
           callback(null, filename);
         },
       }),
-    })
+    }),
   )
   uploadPhoto(@UploadedFile() photo) {
     const photoUrl =
-      this.configService.get("BASE_URL") + "/static/photos/" + photo.filename;
+      this.configService.get('BASE_URL') + '/static/photos/' + photo.filename;
     return { url: photoUrl };
   }
 }

@@ -1,19 +1,19 @@
-import { Injectable } from "@nestjs/common";
-import { UserBasketAdsRepository } from "./repositories/Basket.repository";
-import { AdIdDto } from "./dto/ad-id.dto";
-import { UserIdDto } from "../common/dto/user-id.dto";
-import { AdsRepository } from "../ads/repositories/ads.repository";
-import { AdsStatus } from "../constants/AdsStatus.enum";
-import { makeError } from "src/common/errors";
-import { DeleteUsersBasketDto } from "./dto/delete-ad-params.dto";
-import { SortQueryDto } from "./dto/query.dto";
-import { Order } from "../constants/Order.enum";
+import { Injectable } from '@nestjs/common';
+import { UserBasketAdsRepository } from './repositories/Basket.repository';
+import { AdIdDto } from './dto/ad-id.dto';
+import { UserIdDto } from '../common/dto/user-id.dto';
+import { AdsRepository } from '../ads/repositories/ads.repository';
+import { AdsStatus } from '../constants/AdsStatus.enum';
+import { makeError } from 'src/common/errors';
+import { DeleteUsersBasketDto } from './dto/delete-ad-params.dto';
+import { SortQueryDto } from './dto/query.dto';
+import { Order } from '../constants/Order.enum';
 
 @Injectable()
 export class BasketService {
   constructor(
     private userBasketAdsRepository: UserBasketAdsRepository,
-    private adsRepository: AdsRepository
+    private adsRepository: AdsRepository,
   ) {}
 
   async createUsersBasketAd(params: UserIdDto, body: AdIdDto) {
@@ -21,7 +21,7 @@ export class BasketService {
       where: { user_id: params.userId, ad_id: body.adId },
     });
     if (adInBasket) {
-      throw makeError("AD_ALREADY_ADDED");
+      throw makeError('AD_ALREADY_ADDED');
     }
     const ad = await this.adsRepository.findOne({ id: body.adId });
     if (
@@ -30,7 +30,7 @@ export class BasketService {
       ad.deleted_at ||
       ad.active_until < new Date()
     ) {
-      throw makeError("NO_SUCH_AD");
+      throw makeError('NO_SUCH_AD');
     } else {
       const userBasketAd = this.userBasketAdsRepository.create();
       userBasketAd.user_id = params.userId;
@@ -44,12 +44,12 @@ export class BasketService {
     const ads = await this.userBasketAdsRepository.find({
       where: { user_id: params.userId },
     });
-    const adIds = ads.map((ad) => ad.ad_id);
-    const qb = this.adsRepository.createQueryBuilder("ads");
-    qb.where("ads.id IN (:...adIds)", { adIds: adIds });
-    qb.andWhere("ads.deleted_at is null");
-    qb.andWhere("ads.active_until > NOW()");
-    qb.andWhere("ads.status = :status", { status: AdsStatus.ACTIVE });
+    const adIds = ads.map(ad => ad.ad_id);
+    const qb = this.adsRepository.createQueryBuilder('ads');
+    qb.where('ads.id IN (:...adIds)', { adIds: adIds });
+    qb.andWhere('ads.deleted_at is null');
+    qb.andWhere('ads.active_until > NOW()');
+    qb.andWhere('ads.status = :status', { status: AdsStatus.ACTIVE });
     if (query.sort && query.order) {
       qb.orderBy(query.sort, query.order || Order.ASC);
     }
@@ -68,7 +68,7 @@ export class BasketService {
       await this.userBasketAdsRepository.delete({ id: ad.id });
       return;
     } else {
-      throw makeError("NO_SUCH_AD");
+      throw makeError('NO_SUCH_AD');
     }
   }
 }

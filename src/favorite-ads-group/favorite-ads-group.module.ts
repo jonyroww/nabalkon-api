@@ -4,6 +4,6 @@ import { FavoriteAdsGroupController } from './favorite-ads-group.controller';
 
 @Module({
   providers: [FavoriteAdsGroupService],
-  controllers: [FavoriteAdsGroupController]
+  controllers: [FavoriteAdsGroupController],
 })
 export class FavoriteAdsGroupModule {}

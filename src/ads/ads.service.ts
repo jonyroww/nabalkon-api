@@ -1,15 +1,15 @@
-import { Injectable } from "@nestjs/common";
-import { AdsRepository } from "./repositories/ads.repository";
-import { CreateAdDto } from "./dto/create-ad.dto";
-import { AdsState } from "../constants/AdsState.enum";
-import { AdsStatus } from "../constants/AdsStatus.enum";
-import { AdsTransferMode } from "../constants/AdsTransferMode.enum";
-import { GetAllQueryDto } from "./dto/get-all-query.dto";
-import { Order } from "../constants/Order.enum";
-import { User } from "../users/entities/User.entity";
-import { AdIdDto } from "./dto/ad-id.dto";
-import { makeError } from "src/common/errors";
-import { UserIdDto } from "./dto/user-id.dto";
+import { Injectable } from '@nestjs/common';
+import { AdsRepository } from './repositories/ads.repository';
+import { CreateAdDto } from './dto/create-ad.dto';
+import { AdsState } from '../constants/AdsState.enum';
+import { AdsStatus } from '../constants/AdsStatus.enum';
+import { AdsTransferMode } from '../constants/AdsTransferMode.enum';
+import { GetAllQueryDto } from './dto/get-all-query.dto';
+import { Order } from '../constants/Order.enum';
+import { User } from '../users/entities/User.entity';
+import { AdIdDto } from './dto/ad-id.dto';
+import { makeError } from 'src/common/errors';
+import { UserIdDto } from './dto/user-id.dto';
 
 @Injectable()
 export class AdsService {
@@ -24,38 +24,38 @@ export class AdsService {
   }
 
   async getAllAds(query: GetAllQueryDto) {
-    const qb = this.adsRepository.createQueryBuilder("ads");
+    const qb = this.adsRepository.createQueryBuilder('ads');
 
-    qb.where("ads.deleted_at is null")
-      .andWhere("ads.status = :status", {
+    qb.where('ads.deleted_at is null')
+      .andWhere('ads.status = :status', {
         status: AdsStatus.ACTIVE,
       })
-      .andWhere("ads.active_until > NOW()");
+      .andWhere('ads.active_until > NOW()');
 
     if (query.q) {
-      qb.addSelect(`word_similarity (:q, "title")`, "similarity_rank");
+      qb.addSelect(`word_similarity (:q, "title")`, 'similarity_rank');
       qb.andWhere(`:q <% "title"`);
-      qb.setParameter("q", query.q);
+      qb.setParameter('q', query.q);
     }
 
     if (query.category_id) {
-      qb.andWhere("ads.category_id = :category_id", {
+      qb.andWhere('ads.category_id = :category_id', {
         category_id: query.category_id,
       });
     }
 
     if (query.city) {
-      qb.andWhere("ads.city = :city", {
+      qb.andWhere('ads.city = :city', {
         city: query.city,
       });
     }
 
-    qb.andWhere("ads.price >= :price_from", {
+    qb.andWhere('ads.price >= :price_from', {
       price_from: query.price_from || 0,
     });
 
     if (query.price_to) {
-      qb.andWhere("ads.price < :price_to", {
+      qb.andWhere('ads.price < :price_to', {
         price_to: query.price_to,
       });
     }
@@ -74,14 +74,14 @@ export class AdsService {
   async getOneAd(params: AdIdDto) {
     const ad = await this.adsRepository.findOne({ id: params.adId });
     if (!ad || ad.deleted_at) {
-      throw makeError("NO_SUCH_AD");
+      throw makeError('NO_SUCH_AD');
     }
     return ad;
   }
 
   async getUsersAds(params: UserIdDto) {
-    const qb = this.adsRepository.createQueryBuilder("ads");
-    qb.where("ads.user_id = :user_id", { user_id: params.userId });
+    const qb = this.adsRepository.createQueryBuilder('ads');
+    qb.where('ads.user_id = :user_id', { user_id: params.userId });
     const [data, total] = await qb.getManyAndCount();
     return { total: total, data: data };
   }

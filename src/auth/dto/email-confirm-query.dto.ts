@@ -1,8 +1,8 @@
-import { IsNumber, IsString, Length, IsPhoneNumber } from "class-validator";
-import { ApiProperty } from "@nestjs/swagger";
+import { IsNumber, IsString, Length, IsPhoneNumber } from 'class-validator';
+import { ApiProperty } from '@nestjs/swagger';
 
 export class EmailTokenDto {
-  @ApiProperty({ type: "varchar" })
+  @ApiProperty({ type: 'varchar' })
   @IsString()
   token: string;
 }

@@ -7,157 +7,157 @@ import {
   JoinTable,
   ManyToOne,
   JoinColumn,
-} from "typeorm";
-import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
-import { Category } from "../../categories/entities/Category.entity";
-import { AdsState } from "../../constants/AdsState.enum";
-import { AdsTransferMode } from "../../constants/AdsTransferMode.enum";
-import { AdsStatus } from "../../constants/AdsStatus.enum";
-import { User } from "../../users/entities/User.entity";
-import { AdView } from "../../ad-views/entities/AdView.entity";
-import { UserBasketAds } from "../../basket/entities/Basket.entity";
+} from 'typeorm';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { Category } from '../../categories/entities/Category.entity';
+import { AdsState } from '../../constants/AdsState.enum';
+import { AdsTransferMode } from '../../constants/AdsTransferMode.enum';
+import { AdsStatus } from '../../constants/AdsStatus.enum';
+import { User } from '../../users/entities/User.entity';
+import { AdView } from '../../ad-views/entities/AdView.entity';
+import { UserBasketAds } from '../../basket/entities/Basket.entity';
 
-@Entity({ name: "ads" })
+@Entity({ name: 'ads' })
 export class Ads {
   @ApiProperty()
   @PrimaryColumn({
-    type: "int",
+    type: 'int',
     generated: true,
     readonly: true,
   })
   id: number;
 
   @ApiProperty({
-    type: "string",
-    example: "2019-11-22T16:03:05Z",
+    type: 'string',
+    example: '2019-11-22T16:03:05Z',
     nullable: false,
   })
   @Column({
     nullable: false,
-    type: "timestamp with time zone",
+    type: 'timestamp with time zone',
   })
   created_at: Date;
 
-  @ApiPropertyOptional({ type: "string", example: "2019-11-22T16:03:05Z" })
-  @Column({ type: "timestamp with time zone", nullable: false })
+  @ApiPropertyOptional({ type: 'string', example: '2019-11-22T16:03:05Z' })
+  @Column({ type: 'timestamp with time zone', nullable: false })
   updated_at: Date;
 
-  @ApiPropertyOptional({ type: "string", example: "2019-11-22T16:03:05Z" })
-  @Column({ type: "timestamp with time zone" })
+  @ApiPropertyOptional({ type: 'string', example: '2019-11-22T16:03:05Z' })
+  @Column({ type: 'timestamp with time zone' })
   deleted_at: Date;
 
-  @ApiPropertyOptional({ type: "string", example: "2019-11-22T16:03:05Z" })
-  @Column({ type: "timestamp with time zone" })
+  @ApiPropertyOptional({ type: 'string', example: '2019-11-22T16:03:05Z' })
+  @Column({ type: 'timestamp with time zone' })
   active_until: Date;
 
-  @ApiPropertyOptional({ type: "string" })
-  @Column({ type: "varchar" })
+  @ApiPropertyOptional({ type: 'string' })
+  @Column({ type: 'varchar' })
   city: string;
 
   @ApiPropertyOptional()
-  @Column("enum", {
+  @Column('enum', {
     enum: AdsState,
   })
   state: AdsState;
 
   @ApiPropertyOptional()
-  @Column({ type: "text" })
+  @Column({ type: 'text' })
   state_description: string;
 
   @ApiPropertyOptional()
-  @Column({ type: "float" })
+  @Column({ type: 'float' })
   weight: number;
 
   @ApiPropertyOptional()
   @Column({
-    type: "text",
+    type: 'text',
   })
   title: string;
 
   @ApiPropertyOptional()
-  @Column({ type: "text" })
+  @Column({ type: 'text' })
   description: string;
 
   @ApiPropertyOptional()
-  @Column({ type: "decimal", scale: 2 })
+  @Column({ type: 'decimal', scale: 2 })
   price: number;
 
   @ApiPropertyOptional()
-  @Column("enum", {
+  @Column('enum', {
     enum: AdsTransferMode,
   })
   transfer_mode: AdsTransferMode;
 
   @ApiPropertyOptional()
   @Column({
-    type: "varchar",
+    type: 'varchar',
   })
   deal_address: string;
 
   @ApiPropertyOptional()
   @Column({
-    type: "json",
+    type: 'json',
   })
   deal_coordinates: JSON;
 
-  @ApiPropertyOptional({ type: "string" })
-  @Column({ type: "varchar" })
+  @ApiPropertyOptional({ type: 'string' })
+  @Column({ type: 'varchar' })
   contact_email: string;
 
-  @ApiPropertyOptional({ type: "string" })
-  @Column({ type: "varchar" })
+  @ApiPropertyOptional({ type: 'string' })
+  @Column({ type: 'varchar' })
   contact_phone: string;
 
-  @ApiPropertyOptional({ type: "string" })
-  @Column({ type: "varchar" })
+  @ApiPropertyOptional({ type: 'string' })
+  @Column({ type: 'varchar' })
   contact_call_time_start: string;
 
-  @ApiPropertyOptional({ type: "string" })
-  @Column({ type: "varchar" })
+  @ApiPropertyOptional({ type: 'string' })
+  @Column({ type: 'varchar' })
   contact_call_time_end: string;
 
-  @ApiPropertyOptional({ type: "boolean" })
-  @Column({ type: "boolean" })
+  @ApiPropertyOptional({ type: 'boolean' })
+  @Column({ type: 'boolean' })
   contact_can_call_rdc: boolean;
 
-  @ApiPropertyOptional({ type: "boolean" })
-  @Column({ type: "boolean" })
+  @ApiPropertyOptional({ type: 'boolean' })
+  @Column({ type: 'boolean' })
   contact_no_matter: boolean;
 
   @ApiPropertyOptional()
-  @Column("enum", {
+  @Column('enum', {
     enum: AdsStatus,
   })
   status: AdsStatus;
 
-  @ApiPropertyOptional({ type: "int" })
-  @Column({ type: "int" })
+  @ApiPropertyOptional({ type: 'int' })
+  @Column({ type: 'int' })
   user_id: number;
 
-  @ApiProperty({ type: "int" })
-  @Column({ type: "int" })
+  @ApiProperty({ type: 'int' })
+  @Column({ type: 'int' })
   category_id: number;
 
   @ApiProperty()
   @ManyToOne(
     () => User,
-    (user: User) => user.ad
+    (user: User) => user.ad,
   )
-  @JoinColumn({ name: "user_id" })
+  @JoinColumn({ name: 'user_id' })
   user: User;
 
   @ApiProperty()
   @OneToMany(
     () => AdView,
     (adView: AdView) => adView.ad,
-    { eager: true }
+    { eager: true },
   )
   views: AdView[];
 
   @ApiProperty()
   @OneToMany(
     () => UserBasketAds,
-    (userBasketAds: UserBasketAds) => userBasketAds.ad_id
+    (userBasketAds: UserBasketAds) => userBasketAds.ad_id,
   )
   user_basket_ads: UserBasketAds[];
 }

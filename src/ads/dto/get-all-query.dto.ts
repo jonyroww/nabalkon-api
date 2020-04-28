@@ -11,46 +11,46 @@ import {
   IsDate,
   IsEnum,
   IsJSON,
-} from "class-validator";
-import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
-import { Order } from "../../constants/Order.enum";
-import { PaginationFilterDto } from "../../common/dto/pagination-filter.dto";
-import { Transform } from "class-transformer";
-import { TransformInt } from "../../common/utils/transform-int.util";
+} from 'class-validator';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { Order } from '../../constants/Order.enum';
+import { PaginationFilterDto } from '../../common/dto/pagination-filter.dto';
+import { Transform } from 'class-transformer';
+import { TransformInt } from '../../common/utils/transform-int.util';
 
 export class GetAllQueryDto extends PaginationFilterDto {
-  @ApiPropertyOptional({ type: "number" })
+  @ApiPropertyOptional({ type: 'number' })
   @IsNumber()
   @Transform(TransformInt)
   @IsOptional()
   @IsInt()
   category_id: number;
 
-  @ApiPropertyOptional({ type: "string" })
+  @ApiPropertyOptional({ type: 'string' })
   @IsOptional()
   @IsString()
   city: string;
 
-  @ApiPropertyOptional({ type: "number" })
+  @ApiPropertyOptional({ type: 'number' })
   @IsNumber()
   @Transform(TransformInt)
   @IsOptional()
   @IsInt()
   price_from: number;
 
-  @ApiPropertyOptional({ type: "number" })
+  @ApiPropertyOptional({ type: 'number' })
   @IsNumber()
   @Transform(TransformInt)
   @IsOptional()
   @IsInt()
   price_to: number;
 
-  @ApiPropertyOptional({ type: "string" })
+  @ApiPropertyOptional({ type: 'string' })
   @IsOptional()
   @IsString()
   search_text: string;
 
-  @ApiPropertyOptional({ type: "string" })
+  @ApiPropertyOptional({ type: 'string' })
   @IsOptional()
   @IsString()
   sort: string;
@@ -60,7 +60,7 @@ export class GetAllQueryDto extends PaginationFilterDto {
   @IsEnum(Order)
   order: Order;
 
-  @ApiPropertyOptional({ type: "string" })
+  @ApiPropertyOptional({ type: 'string' })
   @IsOptional()
   @IsString()
   q: string;

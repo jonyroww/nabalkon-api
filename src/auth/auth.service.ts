@@ -1,18 +1,18 @@
-import { Injectable } from "@nestjs/common";
-import { makeError } from "../common/errors";
-import bcrypt from "bcrypt";
-import { UserRepository } from "../users/repositories/User.repository";
-import { RegistrationBodyDto } from "./dto/registration-body.dto";
-import { PhoneVerificationRepository } from "../phone-verification/repositories/Phone-verification.repository";
-import { PurposeType } from "src/constants/PurposeType.enum";
-import { JwtService } from "@nestjs/jwt";
-import { User } from "../users/entities/User.entity";
-import { IJwtPayload } from "./interfaces/JwtPayload.interface";
-import { MailerService } from "@nest-modules/mailer";
-import { ConfigService } from "../config/config.service";
-import { EmailTokenDto } from "./dto/email-confirm-query.dto";
-import { JwtPurposeType } from "../constants/JwtPurpose.enum";
-import { RoleName } from "src/constants/RoleName.enum";
+import { Injectable } from '@nestjs/common';
+import { makeError } from '../common/errors';
+import bcrypt from 'bcrypt';
+import { UserRepository } from '../users/repositories/User.repository';
+import { RegistrationBodyDto } from './dto/registration-body.dto';
+import { PhoneVerificationRepository } from '../phone-verification/repositories/Phone-verification.repository';
+import { PurposeType } from 'src/constants/PurposeType.enum';
+import { JwtService } from '@nestjs/jwt';
+import { User } from '../users/entities/User.entity';
+import { IJwtPayload } from './interfaces/JwtPayload.interface';
+import { MailerService } from '@nest-modules/mailer';
+import { ConfigService } from '../config/config.service';
+import { EmailTokenDto } from './dto/email-confirm-query.dto';
+import { JwtPurposeType } from '../constants/JwtPurpose.enum';
+import { RoleName } from 'src/constants/RoleName.enum';
 
 @Injectable()
 export class AuthService {
@@ -21,30 +21,30 @@ export class AuthService {
     private phoneVerificationRepository: PhoneVerificationRepository,
     private jwtService: JwtService,
     private mailerService: MailerService,
-    private configService: ConfigService
+    private configService: ConfigService,
   ) {}
 
   async registrationUser(body: RegistrationBodyDto) {
     const phoneVerification = await this.phoneVerificationRepository.findOne(
-      body.verification_id
+      body.verification_id,
     );
 
     if (!phoneVerification) {
-      throw makeError("RECORD_NOT_FOUND");
+      throw makeError('RECORD_NOT_FOUND');
     } else if (phoneVerification.purpose !== PurposeType.REGISTRATION) {
-      throw makeError("PURPOSE_IS_NOT_CORRECT");
+      throw makeError('PURPOSE_IS_NOT_CORRECT');
     } else if (phoneVerification.key !== body.verification_key) {
-      throw makeError("KEY_IS_NOT_VALID");
+      throw makeError('KEY_IS_NOT_VALID');
     } else if (phoneVerification.success !== true) {
-      throw makeError("CODE_ALREADY_USED");
+      throw makeError('CODE_ALREADY_USED');
     } else if (phoneVerification.used === true) {
-      throw makeError("VERIFICATION_ALREADY_USED");
+      throw makeError('VERIFICATION_ALREADY_USED');
     }
     const isPhoneUnique = await this.userRepository.findOne({
       phone: phoneVerification.phone,
     });
     if (isPhoneUnique) {
-      throw makeError("PHONE_ALREADY_EXISTS");
+      throw makeError('PHONE_ALREADY_EXISTS');
     }
     const salt = await bcrypt.genSalt();
     const hashedPassword = await bcrypt.hash(body.password, salt);
@@ -81,11 +81,11 @@ export class AuthService {
 
     await this.mailerService.sendMail({
       to: user.email,
-      subject: "Nabalkon - подтверждение почты",
-      template: "email-verification.html",
+      subject: 'Nabalkon - подтверждение почты',
+      template: 'email-verification.html',
       context: {
         link: `${this.configService.get(
-          "BASE_URL"
+          'BASE_URL',
         )}/auth/email-confirm?token=${encodeURIComponent(token)}`,
       },
     });
@@ -97,16 +97,16 @@ export class AuthService {
     if (jwtSign && jwtSign.purpose === JwtPurposeType.EMAIL_VERIFICATION) {
       const user = await this.userRepository.findOne({ id: jwtSign.user_id });
       if (!user && user.deleted_at) {
-        throw makeError("USER_NOT_FOUND");
+        throw makeError('USER_NOT_FOUND');
       }
       if (user.email_confirmed === true) {
-        throw makeError("EMAIL_ALREADY_CONFIRMED");
+        throw makeError('EMAIL_ALREADY_CONFIRMED');
       }
       user.email_confirmed = true;
       await this.userRepository.save(user);
       return jwtSign;
     } else {
-      throw makeError("FORBIDDEN");
+      throw makeError('FORBIDDEN');
     }
   }
 
@@ -114,16 +114,16 @@ export class AuthService {
     const user = await this.userRepository.findOne({ phone: phone });
     if (user) {
       if (user.deleted_at) {
-        throw makeError("USER_NOT_FOUND");
+        throw makeError('USER_NOT_FOUND');
       }
       const isPasswordValid = await bcrypt.compare(password, user.password);
       if (isPasswordValid) {
         return user;
       } else {
-        throw makeError("WRONG_PASSWORD");
+        throw makeError('WRONG_PASSWORD');
       }
     } else {
-      throw makeError("USER_NOT_FOUND");
+      throw makeError('USER_NOT_FOUND');
     }
   }
 }

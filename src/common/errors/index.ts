@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus } from "@nestjs/common";
+import { HttpException, HttpStatus } from '@nestjs/common';
 
 export const errors = {
   USER_NOT_FOUND: HttpStatus.NOT_FOUND,
@@ -41,7 +41,7 @@ export const makeError = (code: ErrorCode, additional: object = {}) => {
       code,
       ...additional,
     },
-    status
+    status,
   );
 
   return err;
