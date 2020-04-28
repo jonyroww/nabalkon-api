@@ -1,5 +1,4 @@
 import { MigrationInterface, QueryRunner, Table } from 'typeorm';
-import { IsDecimal } from 'class-validator';
 
 export class ads1585313229476 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<any> {

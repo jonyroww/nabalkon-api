@@ -1,16 +1,5 @@
-import {
-  Entity,
-  PrimaryColumn,
-  Column,
-  OneToMany,
-  ManyToMany,
-  JoinTable,
-  ManyToOne,
-  JoinColumn,
-} from 'typeorm';
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { User } from '../../users/entities/User.entity';
-import { Ads } from '../../ads/entities/Ads.entity';
+import { Entity, PrimaryColumn, Column } from 'typeorm';
+import { ApiProperty } from '@nestjs/swagger';
 
 @Entity('favorite_sellers')
 export class FavoriteSeller {

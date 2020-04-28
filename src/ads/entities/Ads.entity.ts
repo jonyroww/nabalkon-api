@@ -3,13 +3,10 @@ import {
   PrimaryColumn,
   Column,
   OneToMany,
-  ManyToMany,
-  JoinTable,
   ManyToOne,
   JoinColumn,
 } from 'typeorm';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { Category } from '../../categories/entities/Category.entity';
 import { AdsState } from '../../constants/AdsState.enum';
 import { AdsTransferMode } from '../../constants/AdsTransferMode.enum';
 import { AdsStatus } from '../../constants/AdsStatus.enum';

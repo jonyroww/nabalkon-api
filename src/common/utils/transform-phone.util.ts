@@ -1,6 +1,4 @@
-import _ from 'lodash';
-
-export function TransformPhone(phone: String) {
+export function TransformPhone(phone: string) {
   const regex = new RegExp(/\D/g);
   return phone.replace(regex, '');
 }

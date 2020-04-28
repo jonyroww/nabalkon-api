@@ -6,12 +6,7 @@ import {
   ValidationPipe,
 } from '@nestjs/common';
 import { CategoriesService } from './categories.service';
-import {
-  ApiOkResponse,
-  ApiTags,
-  ApiCreatedResponse,
-  ApiBearerAuth,
-} from '@nestjs/swagger';
+import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { GetAllCategoriesDto } from './dto/get-all-categories.dto';
 
 @UsePipes(new ValidationPipe({ transform: true, whitelist: true }))

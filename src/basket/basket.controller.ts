@@ -11,16 +11,9 @@ import {
   ValidationPipe,
 } from '@nestjs/common';
 import { UserIdDto } from '../common/dto/user-id.dto';
-import {
-  ApiOkResponse,
-  ApiTags,
-  ApiCreatedResponse,
-  ApiBearerAuth,
-} from '@nestjs/swagger';
+import { ApiTags, ApiCreatedResponse, ApiBearerAuth } from '@nestjs/swagger';
 import { BasketService } from './basket.service';
 import { AuthGuard } from '@nestjs/passport';
-import { User } from '../users/entities/User.entity';
-import { GetUser } from '../common/decorators/get-user.decorator';
 import { AdIdDto } from './dto/ad-id.dto';
 import { UserWriteAccessGuard } from '../common/guards/read-access.guard';
 import { DeleteUsersBasketDto } from './dto/delete-ad-params.dto';

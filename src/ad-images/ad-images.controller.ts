@@ -5,17 +5,11 @@ import {
   Post,
   Body,
   Get,
-  Query,
   Param,
   Delete,
 } from '@nestjs/common';
 import { AdImagesService } from './ad-images.service';
-import {
-  ApiOkResponse,
-  ApiTags,
-  ApiCreatedResponse,
-  ApiBearerAuth,
-} from '@nestjs/swagger';
+import { ApiTags, ApiCreatedResponse } from '@nestjs/swagger';
 import { CreateAdImageBodyDto } from './dto/create-ad-image-body.dto';
 import { GetAllDto } from './dto/get-all-ad-images.dto';
 import { CreateAdImageParamsDto } from './dto/create-ad-params.dto';

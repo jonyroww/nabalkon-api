@@ -4,8 +4,8 @@ import {
   UseInterceptors,
   UploadedFile,
 } from '@nestjs/common';
-import { FileInterceptor, MulterModule } from '@nestjs/platform-express';
-import { ApiOkResponse, ApiTags, ApiCreatedResponse } from '@nestjs/swagger';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { ApiTags, ApiCreatedResponse } from '@nestjs/swagger';
 import { ConfigService } from '../config/config.service';
 import multer from 'multer';
 import uuid from 'uuid/v4';

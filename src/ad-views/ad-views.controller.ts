@@ -11,12 +11,7 @@ import {
 import { AdViewsService } from './ad-views.service';
 import { User } from '../users/entities/User.entity';
 import { AuthGuard } from '@nestjs/passport';
-import {
-  ApiOkResponse,
-  ApiTags,
-  ApiCreatedResponse,
-  ApiBearerAuth,
-} from '@nestjs/swagger';
+import { ApiTags, ApiCreatedResponse, ApiBearerAuth } from '@nestjs/swagger';
 import { GetUser } from '../common/decorators/get-user.decorator';
 import { AdIdDto } from './dto/ad-id.dto';
 import { GetAdViewsQueryDto } from './dto/get-ad-views-query.dto';

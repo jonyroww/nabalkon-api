@@ -7,7 +7,6 @@ import {
   ValidationPipe,
   Get,
   Query,
-  Redirect,
   Res,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';

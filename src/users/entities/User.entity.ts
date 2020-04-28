@@ -14,7 +14,6 @@ import { PhoneVerification } from '../../phone-verification/entities/Phone-verif
 import { AdView } from '../../ad-views/entities/AdView.entity';
 import { RoleName } from '../../constants/RoleName.enum';
 import { UserBasketAds } from '../../basket/entities/Basket.entity';
-import { FavoriteSeller } from '../../favorite-sellers/entities/favorite-seller.entity';
 
 @Entity({ name: 'users' })
 export class User {

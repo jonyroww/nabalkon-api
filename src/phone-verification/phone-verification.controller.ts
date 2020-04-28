@@ -10,13 +10,7 @@ import {
   ValidationPipe,
 } from '@nestjs/common';
 import { PhoneVerificationService } from '../phone-verification/phone-verification.service';
-import {
-  ApiTags,
-  ApiCreatedResponse,
-  ApiOkResponse,
-  ApiBody,
-  ApiBearerAuth,
-} from '@nestjs/swagger';
+import { ApiTags, ApiCreatedResponse } from '@nestjs/swagger';
 import { PhoneVerification } from './entities/Phone-verification.entity';
 import { PhoneVerificationRequestDto } from './dto/create-phone-verification.dto';
 import { PhoneVerificationIdDto } from './dto/phone-verification-id.dto';

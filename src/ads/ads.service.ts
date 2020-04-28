@@ -1,9 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { AdsRepository } from './repositories/ads.repository';
 import { CreateAdDto } from './dto/create-ad.dto';
-import { AdsState } from '../constants/AdsState.enum';
 import { AdsStatus } from '../constants/AdsStatus.enum';
-import { AdsTransferMode } from '../constants/AdsTransferMode.enum';
 import { GetAllQueryDto } from './dto/get-all-query.dto';
 import { Order } from '../constants/Order.enum';
 import { User } from '../users/entities/User.entity';
