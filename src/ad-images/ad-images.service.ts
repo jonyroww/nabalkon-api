@@ -1,9 +1,9 @@
-import { Injectable } from "@nestjs/common";
-import { CreateAdImageBodyDto } from "./dto/create-ad-image-body.dto";
-import { AdImageRepository } from "./repositories/AdImage.repository";
-import { GetAllDto } from "./dto/get-all-ad-images.dto";
-import { CreateAdImageParamsDto } from "./dto/create-ad-params.dto";
-import { DeleteAdImageParamsDto } from "./dto/delete-ad-image.dto";
+import { Injectable } from '@nestjs/common';
+import { CreateAdImageBodyDto } from './dto/create-ad-image-body.dto';
+import { AdImageRepository } from './repositories/AdImage.repository';
+import { GetAllDto } from './dto/get-all-ad-images.dto';
+import { CreateAdImageParamsDto } from './dto/create-ad-params.dto';
+import { DeleteAdImageParamsDto } from './dto/delete-ad-image.dto';
 
 @Injectable()
 export class AdImagesService {
@@ -11,7 +11,7 @@ export class AdImagesService {
 
   async createAdImage(
     body: CreateAdImageBodyDto,
-    params: CreateAdImageParamsDto
+    params: CreateAdImageParamsDto,
   ) {
     const adImage = this.adImageRepository.create(body);
     adImage.ad_id = params.adId;
@@ -20,9 +20,9 @@ export class AdImagesService {
   }
 
   async getAllAdImages(params: GetAllDto) {
-    const qb = this.adImageRepository.createQueryBuilder("ad_images");
-    qb.where("ad_images.deleted_at is null");
-    qb.andWhere("ad_images.ad_id = :ad_id", { ad_id: params.adId });
+    const qb = this.adImageRepository.createQueryBuilder('ad_images');
+    qb.where('ad_images.deleted_at is null');
+    qb.andWhere('ad_images.ad_id = :ad_id', { ad_id: params.adId });
 
     const [data, total] = await qb.getManyAndCount();
     return { total: total, data: data };
@@ -31,7 +31,7 @@ export class AdImagesService {
   async deleteAllAdImages(params: DeleteAdImageParamsDto) {
     const adImage = await this.adImageRepository.findOne({
       ad_id: params.adId,
-      id: params.imageId
+      id: params.imageId,
     });
     adImage.deleted_at = new Date();
     await this.adImageRepository.save(adImage);

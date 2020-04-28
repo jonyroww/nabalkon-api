@@ -9,7 +9,9 @@ describe('FavoriteAdsGroup Controller', () => {
       controllers: [FavoriteAdsGroupController],
     }).compile();
 
-    controller = module.get<FavoriteAdsGroupController>(FavoriteAdsGroupController);
+    controller = module.get<FavoriteAdsGroupController>(
+      FavoriteAdsGroupController,
+    );
   });
 
   it('should be defined', () => {

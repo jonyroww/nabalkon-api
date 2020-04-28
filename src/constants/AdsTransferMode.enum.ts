@@ -1,4 +1,4 @@
 export enum AdsTransferMode {
-  PICKUP = "PICKUP",
-  DISPATCH = "DISPATCH"
+  PICKUP = 'PICKUP',
+  DISPATCH = 'DISPATCH',
 }

@@ -9,7 +9,9 @@ describe('PhoneVerification Controller', () => {
       controllers: [PhoneVerificationController],
     }).compile();
 
-    controller = module.get<PhoneVerificationController>(PhoneVerificationController);
+    controller = module.get<PhoneVerificationController>(
+      PhoneVerificationController,
+    );
   });
 
   it('should be defined', () => {
