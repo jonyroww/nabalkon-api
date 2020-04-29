@@ -67,13 +67,14 @@ export class PhoneVerification {
   success: boolean;
 
   @ApiProperty()
-  @Column({ type: 'int' })
-  user_id: number;
+  @Column({ type: 'int', nullable: true })
+  user_id?: number;
 
   @OneToOne(
     () => User,
     (user: User) => user.registration,
+    { nullable: true }
   )
   @JoinColumn({ name: 'user_id' })
-  user: User;
+  user?: User;
 }

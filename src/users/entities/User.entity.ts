@@ -102,7 +102,7 @@ export class User {
   @ApiProperty()
   @OneToMany(
     () => Ads,
-    (ads: Ads) => ads.user_id,
+    (ads: Ads) => ads.user,
   )
   ad: Ads[];
 
@@ -110,16 +110,11 @@ export class User {
   @OneToMany(
     () => AdView,
     (adView: AdView) => adView.user,
-    { eager: true },
   )
   views: AdView[];
 
   @ApiPropertyOptional({ type: () => Ads })
-  @ManyToMany(
-    () => Ads,
-    (ad: Ads) => ad.id,
-    { eager: true },
-  )
+  @ManyToMany(() => Ads)
   @JoinTable({
     name: 'user_basket_ads',
     joinColumn: { name: 'user_id', referencedColumnName: 'id' },
@@ -130,15 +125,12 @@ export class User {
   @ApiProperty()
   @OneToMany(
     () => UserBasketAds,
-    (userBasketAds: UserBasketAds) => userBasketAds.user_id,
+    (userBasketAds: UserBasketAds) => userBasketAds.user,
   )
   user_basket_ads: UserBasketAds[];
 
   @ApiPropertyOptional({ type: () => User })
-  @ManyToMany(
-    () => User,
-    (user: User) => user.id,
-  )
+  @ManyToMany(() => User)
   @JoinTable({
     name: 'favorite_sellers',
     joinColumn: { name: 'user_id', referencedColumnName: 'id' },

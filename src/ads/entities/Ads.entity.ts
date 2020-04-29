@@ -147,14 +147,13 @@ export class Ads {
   @OneToMany(
     () => AdView,
     (adView: AdView) => adView.ad,
-    { eager: true },
   )
   views: AdView[];
 
   @ApiProperty()
   @OneToMany(
     () => UserBasketAds,
-    (userBasketAds: UserBasketAds) => userBasketAds.ad_id,
+    (userBasketAds: UserBasketAds) => userBasketAds.ad,
   )
   user_basket_ads: UserBasketAds[];
 }
