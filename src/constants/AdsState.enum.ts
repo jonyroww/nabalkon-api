@@ -1,7 +1,18 @@
 export enum AdsState {
+  /**
+   * Новый
+   */
   NEW = 'NEW',
-  NOT_OPEN = 'NOT_OPEN',
+  /**
+   * Сломано
+   */
   BROKEN = 'BROKEN',
-  CLOSED = 'CLOSED',
+  /**
+   * Запечатано
+   */
+  NOT_OPEN = 'NOT_OPEN',
+  /**
+   * Открыто
+   */
   OPEN = 'OPEN',
 }
