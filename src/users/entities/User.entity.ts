@@ -17,7 +17,7 @@ import { RoleName } from "../../constants/RoleName.enum";
 import { UserBasketAds } from "../../basket/entities/Basket.entity";
 import { FavoriteSeller } from "../../favorite-sellers/entities/favorite-seller.entity";
 import { FavoriteAdGroup } from "../../favorite-ads-group/entities/ad-group.entity.dto";
-import { FavoriteAd } from "src/favorite-ads/entities/favorite-ads.entity";
+import { FavoriteAd } from "../../favorite-ads/entities/favorite-ads.entity";
 
 @Entity({ name: "users" })
 export class User {
