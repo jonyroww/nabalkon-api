@@ -1,38 +1,31 @@
-import {
-  Entity,
-  PrimaryColumn,
-  Column,
-  OneToMany,
-  ManyToMany,
-  JoinTable
-} from "typeorm";
-import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
+import { Entity, PrimaryColumn, Column } from 'typeorm';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
-@Entity({ name: "categories" })
+@Entity({ name: 'categories' })
 export class Category {
   @ApiProperty()
   @PrimaryColumn({
-    type: "int",
+    type: 'int',
     generated: true,
-    readonly: true
+    readonly: true,
   })
   id: number;
 
-  @ApiProperty({ example: "Название" })
+  @ApiProperty({ example: 'Название' })
   @Column({
-    type: "text"
+    type: 'text',
   })
   title: string;
 
   @ApiPropertyOptional()
   @Column({
-    type: "varchar"
+    type: 'varchar',
   })
   image_url: string;
 
   @ApiProperty()
   @Column({
-    type: "int"
+    type: 'int',
   })
   parent_category_id: number;
 }

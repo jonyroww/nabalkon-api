@@ -1,3 +1,4 @@
+
 import { Module } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { AdsModule } from "../ads/ads.module";
@@ -17,16 +18,18 @@ import { FavoriteSellersModule } from "src/favorite-sellers/favorite-sellers.mod
 import { FavoriteAdsModule } from "../favorite-ads/favorite-ads.module";
 import { FavoriteAdsGroupModule } from "../favorite-ads-group/favorite-ads-group.module";
 
+
+
 @Module({
   imports: [
     MailerModule.forRootAsync({
       useFactory: (configService: ConfigService) => ({
         defaults: {
-          from: configService.get("EMAIL_FROM"),
+          from: configService.get('EMAIL_FROM'),
         },
-        transport: configService.get("SMTP_URL"),
+        transport: configService.get('SMTP_URL'),
         template: {
-          dir: path.join(appRootPath.toString(), "templates"),
+          dir: path.join(appRootPath.toString(), 'templates'),
           adapter: new HandlebarsAdapter(),
         },
       }),

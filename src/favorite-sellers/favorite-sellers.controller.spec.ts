@@ -9,7 +9,9 @@ describe('FavoriteSellers Controller', () => {
       controllers: [FavoriteSellersController],
     }).compile();
 
-    controller = module.get<FavoriteSellersController>(FavoriteSellersController);
+    controller = module.get<FavoriteSellersController>(
+      FavoriteSellersController,
+    );
   });
 
   it('should be defined', () => {

@@ -1,4 +1,4 @@
-import { MigrationInterface, QueryRunner } from "typeorm";
+import { MigrationInterface, QueryRunner } from 'typeorm';
 
 export class adsCreateGinIndex1585831248016 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<any> {
@@ -10,6 +10,6 @@ export class adsCreateGinIndex1585831248016 implements MigrationInterface {
   }
 
   public async down(queryRunner: QueryRunner): Promise<any> {
-    await queryRunner.dropIndex("ads", "IX_ads__title");
+    await queryRunner.dropIndex('ads', 'IX_ads__title');
   }
 }
