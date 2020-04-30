@@ -1,8 +1,9 @@
 import { Entity, PrimaryColumn, Column } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
 
-@Entity('favorite_sellers')
-export class FavoriteSeller {
+
+@Entity("favorite_ads_groups")
+export class FavoriteAdGroup {
   @ApiProperty()
   @PrimaryColumn({
     type: 'int',
@@ -22,11 +23,21 @@ export class FavoriteSeller {
   })
   created_at: Date;
 
-  @ApiProperty({ type: 'int' })
-  @Column({ type: 'int' })
-  ad_id: number;
+
+  @ApiProperty({ type: "int" })
+  @Column({ type: "int" })
+  user_id: number;
+
 
   @ApiProperty({ type: 'string' })
   @Column({ type: 'varchar' })
   title: number;
+
+  @ApiProperty()
+  @ManyToOne(
+    () => User,
+    (user: User) => user.favorite_groups
+  )
+  @JoinColumn({ name: "user_id" })
+  user: User;
 }
