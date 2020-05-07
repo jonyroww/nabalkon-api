@@ -48,6 +48,7 @@ import { FavoriteAdsGroupModule } from "../favorite-ads-group/favorite-ads-group
     FavoriteSellersModule,
     FavoriteAdsModule,
     FavoriteAdsGroupModule,
+    FavoriteAdsModule
   ],
   controllers: [],
   providers: [],
