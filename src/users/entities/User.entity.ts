@@ -15,9 +15,8 @@ import { PhoneVerification } from "../../phone-verification/entities/Phone-verif
 import { AdView } from "../../ad-views/entities/AdView.entity";
 import { RoleName } from "../../constants/RoleName.enum";
 import { UserBasketAds } from "../../basket/entities/Basket.entity";
-import { FavoriteSeller } from "../../favorite-sellers/entities/favorite-seller.entity";
 import { FavoriteAdGroup } from "../../favorite-ads-group/entities/ad-group.entity.dto";
-import { FavoriteAd } from "../../favorite-ads/entities/favorite-ads.entity";
+
 
 @Entity({ name: "users" })
 export class User {
@@ -147,7 +146,7 @@ export class User {
   @ApiProperty()
   @OneToMany(
     () => FavoriteAdGroup,
-    (favoriteAdGroup: FavoriteAdGroup) => favoriteAdGroup.user_id
+    (favoriteAdGroup: FavoriteAdGroup) => favoriteAdGroup.user
   )
   favorite_groups: FavoriteAdGroup[];
 
