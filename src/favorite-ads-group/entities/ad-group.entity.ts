@@ -1,6 +1,8 @@
-import { Entity, PrimaryColumn, Column,ManyToOne, JoinColumn } from 'typeorm';
-import { ApiProperty } from '@nestjs/swagger';
+import { Entity, PrimaryColumn, Column,ManyToOne, JoinColumn, OneToMany } from 'typeorm';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import {User} from "../../users/entities/User.entity"
+import { FavoriteAd } from '../../favorite-ads/entities/favorite-ads.entity';
+
 
 
 @Entity("favorite_ads_groups")
@@ -42,5 +44,11 @@ export class FavoriteAdGroup {
   )
   @JoinColumn({ name: "user_id" })
   user: User;
-  
+
+  @ApiProperty()
+  @OneToMany(
+    () => FavoriteAd,
+    (favoriteAd: FavoriteAd) => favoriteAd.group
+  )
+  favorite_ads: FavoriteAd[];
 }

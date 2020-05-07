@@ -11,6 +11,7 @@ import {
 import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
 import { User } from "../../users/entities/User.entity";
 import { Ads } from "../../ads/entities/Ads.entity";
+import { FavoriteAdGroup } from "../../favorite-ads-group/entities/ad-group.entity";
 
 @Entity("favorite_ads")
 export class FavoriteAd {
@@ -41,7 +42,15 @@ export class FavoriteAd {
   @Column({ type: "int" })
   ad_id: number;
 
-  @ApiProperty({ type: "int" })
+  @ApiProperty({ type: "int" }) 
   @Column({ type: "int" })
   group_id: number;
+
+  @ApiProperty()
+  @ManyToOne(
+    () => FavoriteAdGroup,
+    (group: FavoriteAdGroup) => group.favorite_ads
+  )
+  @JoinColumn({ name: "group_id" })
+  group: FavoriteAdGroup;
 }

@@ -15,6 +15,7 @@ import { AdsStatus } from '../../constants/AdsStatus.enum';
 import { User } from '../../users/entities/User.entity';
 import { AdView } from '../../ad-views/entities/AdView.entity';
 import { UserBasketAds } from '../../basket/entities/Basket.entity';
+import { FavoriteAdGroup } from '../../favorite-ads-group/entities/ad-group.entity';
 
 @Entity({ name: 'ads' })
 export class Ads {
