@@ -2,11 +2,10 @@ import { Module } from '@nestjs/common';
 import { UsersController } from './users.controller';
 import { UsersService } from './users.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { UserRepository } from './repositories/User.repository';
-import { User } from './entities/User.entity';
+import { FavoriteAdGroup } from '../favorite-ads-group/entities/ad-group.entity.dto';
 
 @Module({
-  imports:[TypeOrmModule.forFeature([UserRepository,User])],
+  imports:[TypeOrmModule.forFeature([ FavoriteAdGroup])],
   controllers: [UsersController],
   providers: [UsersService],
 })

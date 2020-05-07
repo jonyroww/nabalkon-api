@@ -149,6 +149,7 @@ export class User {
     (favoriteAdGroup: FavoriteAdGroup) => favoriteAdGroup.user
   )
   favorite_groups: FavoriteAdGroup[];
+  
 
   @ApiPropertyOptional({ type: () => Ads })
   @ManyToMany(

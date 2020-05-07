@@ -34,6 +34,7 @@ export class FavoriteAdGroup {
   @Column({ type: 'varchar' })
   title: number;
 
+  
   @ApiProperty()
   @ManyToOne(
     () => User,
@@ -41,4 +42,5 @@ export class FavoriteAdGroup {
   )
   @JoinColumn({ name: "user_id" })
   user: User;
+  
 }
