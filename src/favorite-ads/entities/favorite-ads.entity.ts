@@ -49,7 +49,8 @@ export class FavoriteAd {
   @ApiProperty()
   @ManyToOne(
     () => FavoriteAdGroup,
-    (group: FavoriteAdGroup) => group.favorite_ads
+    (group: FavoriteAdGroup) => group.favorite_ads,
+    {eager:true}
   )
   @JoinColumn({ name: "group_id" })
   group: FavoriteAdGroup;
