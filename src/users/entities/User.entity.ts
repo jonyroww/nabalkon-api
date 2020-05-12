@@ -7,18 +7,16 @@ import {
   JoinTable,
   Index,
   OneToOne,
+} from 'typeorm';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { Ads } from '../../ads/entities/Ads.entity';
+import { PhoneVerification } from '../../phone-verification/entities/Phone-verification.entity';
+import { AdView } from '../../ad-views/entities/AdView.entity';
+import { RoleName } from '../../constants/RoleName.enum';
+import { UserBasketAds } from '../../basket/entities/Basket.entity';
+import { FavoriteAdGroup } from '../../favorite-ads-group/entities/ad-group.entity';
 
-} from "typeorm";
-import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
-import { Ads } from "../../ads/entities/Ads.entity";
-import { PhoneVerification } from "../../phone-verification/entities/Phone-verification.entity";
-import { AdView } from "../../ad-views/entities/AdView.entity";
-import { RoleName } from "../../constants/RoleName.enum";
-import { UserBasketAds } from "../../basket/entities/Basket.entity";
-import { FavoriteAdGroup } from "../../favorite-ads-group/entities/ad-group.entity";
-
-
-@Entity({ name: "users" })
+@Entity({ name: 'users' })
 export class User {
   @ApiProperty()
   @PrimaryColumn({
@@ -129,8 +127,7 @@ export class User {
   @OneToMany(
     () => UserBasketAds,
 
-    (userBasketAds: UserBasketAds) => userBasketAds.user
-
+    (userBasketAds: UserBasketAds) => userBasketAds.user,
   )
   user_basket_ads: UserBasketAds[];
 
@@ -146,20 +143,20 @@ export class User {
   @ApiProperty()
   @OneToMany(
     () => FavoriteAdGroup,
-    (favoriteAdGroup: FavoriteAdGroup) => favoriteAdGroup.user
+    (favoriteAdGroup: FavoriteAdGroup) => favoriteAdGroup.user,
   )
   favorite_groups: FavoriteAdGroup[];
-  
 
   @ApiPropertyOptional({ type: () => Ads })
   @ManyToMany(
     () => Ads,
-    (ad: Ads) => ad.users_added_to_favorite
+    (ad: Ads) => ad.users_added_to_favorite,
+    { eager: true },
   )
   @JoinTable({
-    name: "favorite_ads",
-    joinColumn: { name: "user_id", referencedColumnName: "id" },
-    inverseJoinColumn: { name: "ad_id", referencedColumnName: "id" },
+    name: 'favorite_ads',
+    joinColumn: { name: 'user_id', referencedColumnName: 'id' },
+    inverseJoinColumn: { name: 'ad_id', referencedColumnName: 'id' },
   })
   favorite_ads: Ads[];
 }

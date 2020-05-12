@@ -8,6 +8,7 @@ import { GetAllFavoriteAdDto } from './dto/get-all-favorite-ad.dto';
 import { AdsRepository } from '../ads/repositories/ads.repository';
 import { AdsStatus } from '../constants/AdsStatus.enum';
 import { Order } from '../constants/Order.enum';
+import { DeleteFavoriteAdDto } from './dto/delete-favorite-ad.dto';
 
 @Injectable()
 export class FavoriteAdsService {
@@ -83,5 +84,24 @@ export class FavoriteAdsService {
       .offset(query.offset)
       .getManyAndCount();
     return { total: total, data: data };
+  }
+
+  async deleteFavoriteAd(params: DeleteFavoriteAdDto) {
+    const user = await this.userRepository.findOne({ id: params.userId });
+    if (!user && user.deleted_at) {
+      throw makeError('USER_NOT_FOUND');
+    }
+    const favoriteAd = await this.favoriteAdRepository.findOne({
+      user_id: params.userId,
+      ad_id: params.adId,
+    });
+    if (!favoriteAd) {
+      throw makeError('NO_SUCH_AD');
+    }
+    await this.favoriteAdRepository.delete({
+      user_id: params.userId,
+      ad_id: params.adId,
+    });
+    return;
   }
 }
