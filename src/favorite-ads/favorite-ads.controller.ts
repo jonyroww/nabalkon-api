@@ -6,7 +6,6 @@ import {
   Get,
   UseGuards,
   Query,
-  Put,
   Delete,
 } from '@nestjs/common';
 import { FavoriteAdsService } from './favorite-ads.service';
