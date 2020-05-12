@@ -23,6 +23,12 @@ export class FavoriteAdsService {
     if (!user && user.deleted_at) {
       throw makeError('USER_NOT_FOUND');
     }
+    const favoriteAdExist = await this.favoriteAdRepository.findOne({
+      where: { user_id: params.userId, ad_id: body.adId },
+    });
+    if (favoriteAdExist) {
+      throw makeError('AD_ALREADY_ADDED');
+    }
     const favoriteAd = this.favoriteAdRepository.create();
     favoriteAd.ad_id = body.adId;
     favoriteAd.group_id = body.groupId;
