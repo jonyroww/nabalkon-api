@@ -30,10 +30,20 @@ export class FavoriteAdsGroupController {
   @ApiCreatedResponse()
   @ApiBearerAuth()
   @Post('users/:userId/favorites/ads/groups')
-  createFavoriteAd(
+  createFavoriteAdGroup(
     @Param() params: UserIdDto,
     @Body() body: CreateFavoriteAdGroupDto,
   ) {
     return this.favoriteAdsGroupService.createFavoriteAdGroup(params, body);
+  }
+
+  @ApiTags('Favorite ads groups')
+  @ApiCreatedResponse()
+  @UseGuards(AuthGuard('jwt'), UserWriteAccessGuard)
+  @ApiOkResponse()
+  @ApiBearerAuth()
+  @Get('users/:userId/favorites/ads/groups')
+  getFavoriteAdGroup(@Param() params: UserIdDto) {
+    return this.favoriteAdsGroupService.getFavoriteAdGroups(params);
   }
 }

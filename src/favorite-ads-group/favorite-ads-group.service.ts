@@ -29,4 +29,11 @@ export class FavoriteAdsGroupService {
     await this.favoriteAdGroupRepository.save(group);
     return group;
   }
+
+  async getFavoriteAdGroups(params: UserIdDto) {
+    const user = await this.userRepository.findOne({ id: params.userId });
+    if (!user && user.deleted_at) {
+      throw makeError('USER_NOT_FOUND');
+    }
+  }
 }
