@@ -5,7 +5,6 @@ import {
   Body,
   Get,
   UseGuards,
-  Query,
   Delete,
 } from '@nestjs/common';
 import { UserIdDto } from '../common/dto/user-id.dto';
@@ -19,6 +18,7 @@ import {
 import { AuthGuard } from '@nestjs/passport';
 import { UserWriteAccessGuard } from '../common/guards/read-access.guard';
 import { CreateFavoriteAdGroupDto } from './dto/create-ad-group.dto';
+import { UpdateGroupDto } from './dto/update-group.dto';
 
 @Controller()
 export class FavoriteAdsGroupController {
@@ -45,5 +45,25 @@ export class FavoriteAdsGroupController {
   @Get('users/:userId/favorites/ads/groups')
   getFavoriteAdGroup(@Param() params: UserIdDto) {
     return this.favoriteAdsGroupService.getFavoriteAdGroups(params);
+  }
+
+  @ApiTags('Favorite ads groups')
+  @ApiCreatedResponse()
+  @UseGuards(AuthGuard('jwt'), UserWriteAccessGuard)
+  @ApiOkResponse()
+  @ApiBearerAuth()
+  @Get('users/:userId/favorites/ads/groups/:groupId')
+  getOneFavoriteAdGroup(@Param() params: UpdateGroupDto) {
+    return this.favoriteAdsGroupService.getOneFavoriteAdGroup(params);
+  }
+
+  @ApiTags('Favorite ads groups')
+  @ApiCreatedResponse()
+  @UseGuards(AuthGuard('jwt'), UserWriteAccessGuard)
+  @ApiOkResponse()
+  @ApiBearerAuth()
+  @Delete('users/:userId/favorites/ads/groups/:groupId')
+  DeleteFavoriteAdGroup(@Param() params: UpdateGroupDto) {
+    return this.favoriteAdsGroupService.deleteFavoriteAdGroup(params);
   }
 }

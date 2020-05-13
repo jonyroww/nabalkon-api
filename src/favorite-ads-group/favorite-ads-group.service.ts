@@ -6,6 +6,7 @@ import { FavoriteAdRepository } from '../favorite-ads/repositories/favorite-ads.
 import { AdsRepository } from '../ads/repositories/ads.repository';
 import { UserRepository } from '../users/repositories/User.repository';
 import { makeError } from '../common/errors/index';
+import { UpdateGroupDto } from './dto/update-group.dto';
 
 @Injectable()
 export class FavoriteAdsGroupService {
@@ -20,10 +21,6 @@ export class FavoriteAdsGroupService {
     params: UserIdDto,
     body: CreateFavoriteAdGroupDto,
   ) {
-    const user = await this.userRepository.findOne({ id: params.userId });
-    if (!user && user.deleted_at) {
-      throw makeError('USER_NOT_FOUND');
-    }
     const group = this.favoriteAdGroupRepository.create(body);
     group.user_id = params.userId;
     await this.favoriteAdGroupRepository.save(group);
@@ -31,9 +28,43 @@ export class FavoriteAdsGroupService {
   }
 
   async getFavoriteAdGroups(params: UserIdDto) {
-    const user = await this.userRepository.findOne({ id: params.userId });
-    if (!user && user.deleted_at) {
-      throw makeError('USER_NOT_FOUND');
+    const qb = this.favoriteAdGroupRepository.createQueryBuilder(
+      'favorite_ads_groups',
+    );
+    qb.where('favorite_ads_groups.user_id = :user_id', {
+      user_id: params.userId,
+    });
+
+    const [data, total] = await qb
+      .take(params.limit)
+      .offset(params.offset)
+      .getManyAndCount();
+    return { total: total, data: data };
+  }
+
+  async getOneFavoriteAdGroup(params: UpdateGroupDto) {
+    const qb = this.favoriteAdGroupRepository.createQueryBuilder(
+      'favorite_ads_groups',
+    );
+    qb.where('favorite_ads_groups.user_id = :user_id', {
+      user_id: params.userId,
+    }).andWhere('favorite_ads_groups.id = :group_id', {
+      group_id: params.groupId,
+    });
+
+    return qb.getOne();
+  }
+
+  async deleteFavoriteAdGroup(params: UpdateGroupDto) {
+    const group = await this.favoriteAdGroupRepository.findOne({
+      id: params.groupId,
+    });
+
+    if (group) {
+      await this.favoriteAdGroupRepository.delete({ id: group.id });
+    } else {
+      throw makeError('NO_SUCH_GROUP');
     }
+    return;
   }
 }

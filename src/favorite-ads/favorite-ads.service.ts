@@ -9,6 +9,7 @@ import { AdsRepository } from '../ads/repositories/ads.repository';
 import { AdsStatus } from '../constants/AdsStatus.enum';
 import { Order } from '../constants/Order.enum';
 import { DeleteFavoriteAdDto } from './dto/delete-favorite-ad.dto';
+import _ from 'lodash';
 
 @Injectable()
 export class FavoriteAdsService {
@@ -19,10 +20,6 @@ export class FavoriteAdsService {
   ) {}
 
   async createFavoriteAd(params: UserIdDto, body: CreateFavoriteAdDto) {
-    const user = await this.userRepository.findOne({ id: params.userId });
-    if (!user && user.deleted_at) {
-      throw makeError('USER_NOT_FOUND');
-    }
     const favoriteAdExist = await this.favoriteAdRepository.findOne({
       where: { user_id: params.userId, ad_id: body.adId },
     });
@@ -38,11 +35,14 @@ export class FavoriteAdsService {
   }
 
   async getAllFavoriteAds(query: GetAllFavoriteAdDto, params: UserIdDto) {
-    const user = await this.userRepository.findOne({ id: params.userId });
-    if (!user && user.deleted_at) {
-      throw makeError('USER_NOT_FOUND');
+    const favoriteAds = await this.favoriteAdRepository.find({
+      where: { user_id: params.userId, group_id: query.groupId || null },
+    });
+    if (_.isEmpty(favoriteAds)) {
+      throw makeError('RECORD_NOT_FOUND');
     }
-    const favoriteAdIds = user.favorite_ads.map(ad => ad.id);
+    const favoriteAdIds = favoriteAds.map(ad => ad.ad_id);
+    console.log(favoriteAds);
     const qb = this.adsRepository.createQueryBuilder('ads');
     qb.where('ads.id IN (:...favoriteAdIds)', {
       favoriteAdIds: favoriteAdIds,
@@ -93,10 +93,6 @@ export class FavoriteAdsService {
   }
 
   async deleteFavoriteAd(params: DeleteFavoriteAdDto) {
-    const user = await this.userRepository.findOne({ id: params.userId });
-    if (!user && user.deleted_at) {
-      throw makeError('USER_NOT_FOUND');
-    }
     const favoriteAd = await this.favoriteAdRepository.findOne({
       user_id: params.userId,
       ad_id: params.adId,
