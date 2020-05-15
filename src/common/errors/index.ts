@@ -28,6 +28,7 @@ export const errors = {
   NO_SUCH_AD: HttpStatus.NOT_FOUND,
   AD_ALREADY_ADDED: HttpStatus.BAD_REQUEST,
   SELLER_ALREADY_ADDED: HttpStatus.BAD_REQUEST,
+  NO_SUCH_GROUP: HttpStatus.NOT_FOUND,
 };
 
 export type ErrorCode = keyof typeof errors;

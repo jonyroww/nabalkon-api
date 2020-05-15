@@ -47,7 +47,6 @@ export class CreateAdDto {
 
   @ApiPropertyOptional({ type: 'number' })
   @Transform(TransformInt)
-  @IsOptional()
   @IsNumber()
   price: number;
 
