@@ -9,7 +9,6 @@ import { AdsRepository } from '../ads/repositories/ads.repository';
 import { AdsStatus } from '../constants/AdsStatus.enum';
 import { Order } from '../constants/Order.enum';
 import { DeleteFavoriteAdDto } from './dto/delete-favorite-ad.dto';
-import _ from 'lodash';
 
 @Injectable()
 export class FavoriteAdsService {
