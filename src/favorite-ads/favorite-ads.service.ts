@@ -42,7 +42,6 @@ export class FavoriteAdsService {
       throw makeError('RECORD_NOT_FOUND');
     }
     const favoriteAdIds = favoriteAds.map(ad => ad.ad_id);
-    console.log(favoriteAds);
     const qb = this.adsRepository.createQueryBuilder('ads');
     qb.where('ads.id IN (:...favoriteAdIds)', {
       favoriteAdIds: favoriteAdIds,
@@ -82,7 +81,7 @@ export class FavoriteAdsService {
     }
 
     if (query.sort && query.order) {
-      qb.orderBy(query.sort, query.order || Order.ASC);
+      qb.orderBy(query.sort || 'created_at', query.order || Order.DESC);
     }
 
     const [data, total] = await qb
