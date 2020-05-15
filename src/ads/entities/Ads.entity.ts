@@ -6,7 +6,7 @@ import {
   ManyToOne,
   JoinColumn,
   ManyToMany,
-  JoinTable
+  JoinTable,
 } from 'typeorm';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { AdsState } from '../../constants/AdsState.enum';
@@ -16,6 +16,7 @@ import { User } from '../../users/entities/User.entity';
 import { AdView } from '../../ad-views/entities/AdView.entity';
 import { UserBasketAds } from '../../basket/entities/Basket.entity';
 import { FavoriteAdGroup } from '../../favorite-ads-group/entities/ad-group.entity';
+import { AdSpec } from '../../ad-specs/entities/ad-spec.entity';
 
 @Entity({ name: 'ads' })
 export class Ads {
@@ -155,6 +156,13 @@ export class Ads {
 
   @ApiProperty()
   @OneToMany(
+    () => AdSpec,
+    (spec: AdSpec) => spec.ad,
+  )
+  specs: AdSpec[];
+
+  @ApiProperty()
+  @OneToMany(
     () => UserBasketAds,
     (userBasketAds: UserBasketAds) => userBasketAds.ad,
   )
@@ -163,12 +171,12 @@ export class Ads {
   @ApiPropertyOptional({ type: () => User })
   @ManyToMany(
     () => User,
-    (user: User) => user.favorite_ads
+    (user: User) => user.favorite_ads,
   )
   @JoinTable({
-    name: "favorite_ads",
-    joinColumn: { name: "user_id", referencedColumnName: "id" },
-    inverseJoinColumn: { name: "ad_id", referencedColumnName: "id" },
+    name: 'favorite_ads',
+    joinColumn: { name: 'user_id', referencedColumnName: 'id' },
+    inverseJoinColumn: { name: 'ad_id', referencedColumnName: 'id' },
   })
   users_added_to_favorite: User[];
 }
