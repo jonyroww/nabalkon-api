@@ -8,12 +8,12 @@ export class CreateFavoriteAdDto {
   @IsInt()
   @IsNumber()
   @Transform(TransformInt)
-  adId: number;
+  ad_id: number;
 
   @ApiProperty({ type: 'number', example: 2 })
   @IsInt()
   @IsNumber()
   @Transform(TransformInt)
   @IsOptional()
-  groupId: number;
+  group_id: number;
 }

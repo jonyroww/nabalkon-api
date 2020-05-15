@@ -21,32 +21,28 @@ export class FavoriteAdsService {
 
   async createFavoriteAd(params: UserIdDto, body: CreateFavoriteAdDto) {
     const favoriteAdExist = await this.favoriteAdRepository.findOne({
-      where: { user_id: params.userId, ad_id: body.adId },
+      where: { user_id: params.userId, ad_id: body.ad_id },
     });
     if (favoriteAdExist) {
       throw makeError('AD_ALREADY_ADDED');
     }
     const favoriteAd = this.favoriteAdRepository.create();
-    favoriteAd.ad_id = body.adId;
-    favoriteAd.group_id = body.groupId;
+    favoriteAd.ad_id = body.ad_id;
+    favoriteAd.group_id = body.group_id;
     favoriteAd.user_id = params.userId;
     await this.favoriteAdRepository.save(favoriteAd);
     return favoriteAd;
   }
 
   async getAllFavoriteAds(query: GetAllFavoriteAdDto, params: UserIdDto) {
-    const favoriteAds = await this.favoriteAdRepository.find({
-      where: { user_id: params.userId, group_id: query.groupId || null },
-    });
-    if (_.isEmpty(favoriteAds)) {
-      throw makeError('RECORD_NOT_FOUND');
-    }
-    const favoriteAdIds = favoriteAds.map(ad => ad.ad_id);
     const qb = this.adsRepository.createQueryBuilder('ads');
-    qb.where('ads.id IN (:...favoriteAdIds)', {
-      favoriteAdIds: favoriteAdIds,
-    })
-      .andWhere('ads.deleted_at is null')
+    qb.innerJoin(
+      'ads.users_added_to_favorite',
+      'users_added_to_favorite',
+      'users_added_to_favorite.id = :userId',
+      { userId: params.userId },
+    )
+      .where('ads.deleted_at is null')
       .andWhere('ads.status = :status', {
         status: AdsStatus.ACTIVE,
       })
