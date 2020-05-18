@@ -9,6 +9,7 @@ import { AdIdDto } from './dto/ad-id.dto';
 import { makeError } from '../common/errors';
 import { UserIdDto } from './dto/user-id.dto';
 import { AdSpecRepository } from '../ad-specs/repositories/ad-spec.repository';
+import { UpdateAdDto } from './dto/update-ad.dto';
 
 @Injectable()
 export class AdsService {
@@ -84,6 +85,25 @@ export class AdsService {
       throw makeError('NO_SUCH_AD');
     }
     return ad;
+  }
+
+  async updateAd({ specs, ...body }: UpdateAdDto, user: User, params: AdIdDto) {
+    const ad = await this.adsRepository.findOne({ id: params.adId });
+    if (ad && ad.user_id === user.id && !ad.deleted_at) {
+      const mergeAd = this.adsRepository.merge(ad, body);
+      if (specs) {
+        await this.adsSpecRepository.delete({ ad_id: params.adId });
+        specs.map(async spec => {
+          const adSpec = this.adsSpecRepository.create(spec);
+          adSpec.ad_id = ad.id;
+          await this.adsSpecRepository.save(adSpec);
+        });
+      }
+      await this.adsRepository.save(mergeAd);
+      return mergeAd;
+    } else {
+      throw makeError('NO_SUCH_AD');
+    }
   }
 
   async getUsersAds(params: UserIdDto) {

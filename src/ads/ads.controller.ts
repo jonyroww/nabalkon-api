@@ -8,6 +8,7 @@ import {
   UsePipes,
   ValidationPipe,
   UseGuards,
+  Put,
 } from '@nestjs/common';
 import { AdsService } from './ads.service';
 import { AuthGuard } from '@nestjs/passport';
@@ -24,6 +25,7 @@ import { GetUser } from '../common/decorators/get-user.decorator';
 import { AdIdDto } from './dto/ad-id.dto';
 import { UserIdDto } from './dto/user-id.dto';
 import { UserWriteAccessGuard } from '../common/guards/read-access.guard';
+import { UpdateAdDto } from './dto/update-ad.dto';
 
 @UsePipes(new ValidationPipe({ transform: true, whitelist: true }))
 @Controller()
@@ -37,6 +39,19 @@ export class AdsController {
   @Post('/ads')
   createAd(@Body() body: CreateAdDto, @GetUser() user: User) {
     return this.adsService.createAd(body, user);
+  }
+
+  @ApiTags('Ads')
+  @ApiCreatedResponse()
+  @UseGuards(AuthGuard('jwt'))
+  @ApiBearerAuth()
+  @Put('/ads/:adId')
+  updateAd(
+    @Body() body: UpdateAdDto,
+    @GetUser() user: User,
+    @Param() params: AdIdDto,
+  ) {
+    return this.adsService.updateAd(body, user, params);
   }
 
   @ApiTags('Ads')
