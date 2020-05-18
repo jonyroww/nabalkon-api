@@ -6,13 +6,15 @@ import {
   IsDate,
   IsEnum,
   IsJSON,
+  ValidateNested,
 } from 'class-validator';
-import { Transform } from 'class-transformer';
+import { Transform, Type } from 'class-transformer';
 import { TransformInt } from '../../common/utils/transform-int.util';
 import { TransformDate } from '../../common/utils/transform-date.util';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { AdsState } from '../../constants/AdsState.enum';
 import { AdsTransferMode } from '../../constants/AdsTransferMode.enum';
+import { CreateAdSpecDto } from '../../ad-specs/dto/create-ad-spec-body.dto';
 
 export class CreateAdDto {
   @ApiProperty({ type: 'Date' })
@@ -99,4 +101,13 @@ export class CreateAdDto {
   @IsNumber()
   @Transform(TransformInt)
   category_id: number;
+
+  @ApiProperty({
+    type: 'array',
+    example: [{ title: 'Название', value: 'Значение' }],
+  })
+  @IsOptional()
+  @ValidateNested({ each: true })
+  @Type(() => CreateAdSpecDto)
+  specs: Array<CreateAdSpecDto>;
 }

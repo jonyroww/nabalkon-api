@@ -8,16 +8,26 @@ import { User } from '../users/entities/User.entity';
 import { AdIdDto } from './dto/ad-id.dto';
 import { makeError } from '../common/errors';
 import { UserIdDto } from './dto/user-id.dto';
+import { AdSpecRepository } from '../ad-specs/repositories/ad-spec.repository';
+import { async } from 'rxjs/internal/scheduler/async';
 
 @Injectable()
 export class AdsService {
-  constructor(private adsRepository: AdsRepository) {}
+  constructor(
+    private adsRepository: AdsRepository,
+    private adsSpecRepository: AdSpecRepository,
+  ) {}
 
-  async createAd(body: CreateAdDto, user: User) {
+  async createAd({ specs, ...body }: CreateAdDto, user: User) {
     const ad = this.adsRepository.create(body);
     ad.status = AdsStatus.AWAITING_FOR_ACTIVATION;
     ad.user_id = user.id;
     await this.adsRepository.save(ad);
+    specs.map(async spec => {
+      const adSpec = this.adsSpecRepository.create(spec);
+      adSpec.ad_id = ad.id;
+      await this.adsSpecRepository.save(adSpec);
+    });
     return ad;
   }
 

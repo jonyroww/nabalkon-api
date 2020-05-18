@@ -1,15 +1,18 @@
 import { Injectable } from '@nestjs/common';
 import { AdIdDto } from '../ads/dto/ad-id.dto';
 import { AdSpecRepository } from './repositories/ad-spec.repository';
-import { CreateAdSpecDto } from './dto/create-ad-spec-body.dto';
+import { PaginationFilterDto } from '../common/dto/pagination-filter.dto';
 
 @Injectable()
 export class AdSpecsService {
   constructor(private adSpecRepository: AdSpecRepository) {}
-  async createAdSpec(params: AdIdDto, body: CreateAdSpecDto) {
-    const spec = this.adSpecRepository.create(body);
-    spec.ad_id = params.adId;
-    await this.adSpecRepository.save(spec);
-    return spec;
+  async getAdSpecs(params: AdIdDto, query: PaginationFilterDto) {
+    const qb = this.adSpecRepository.createQueryBuilder('ad_specs');
+    qb.where('ad_specs.ad_id = :adId', { adId: params.adId });
+    const [data, total] = await qb
+      .take(query.limit)
+      .offset(query.offset)
+      .getManyAndCount();
+    return { total: total, data: data };
   }
 }
