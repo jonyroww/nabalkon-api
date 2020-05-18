@@ -9,7 +9,6 @@ import { AdIdDto } from './dto/ad-id.dto';
 import { makeError } from '../common/errors';
 import { UserIdDto } from './dto/user-id.dto';
 import { AdSpecRepository } from '../ad-specs/repositories/ad-spec.repository';
-import { async } from 'rxjs/internal/scheduler/async';
 
 @Injectable()
 export class AdsService {

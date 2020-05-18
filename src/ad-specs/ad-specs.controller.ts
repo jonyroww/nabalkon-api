@@ -1,4 +1,4 @@
-import { Controller, UseGuards, Get, Body, Param, Query } from '@nestjs/common';
+import { Controller, UseGuards, Get, Param, Query } from '@nestjs/common';
 import { AdSpecsService } from './ad-specs.service';
 import { AuthGuard } from '@nestjs/passport';
 import { ApiTags, ApiCreatedResponse, ApiBearerAuth } from '@nestjs/swagger';
