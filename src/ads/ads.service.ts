@@ -18,16 +18,11 @@ export class AdsService {
     private adsSpecRepository: AdSpecRepository,
   ) {}
 
-  async createAd({ specs, ...body }: CreateAdDto, user: User) {
+  async createAd(body: CreateAdDto, user: User) {
     const ad = this.adsRepository.create(body);
     ad.status = AdsStatus.AWAITING_FOR_ACTIVATION;
     ad.user_id = user.id;
     await this.adsRepository.save(ad);
-    specs.map(async spec => {
-      const adSpec = this.adsSpecRepository.create(spec);
-      adSpec.ad_id = ad.id;
-      await this.adsSpecRepository.save(adSpec);
-    });
     return ad;
   }
 
@@ -87,23 +82,17 @@ export class AdsService {
     return ad;
   }
 
-  async updateAd({ specs, ...body }: UpdateAdDto, user: User, params: AdIdDto) {
+  async updateAd(body: UpdateAdDto, user: User, params: AdIdDto) {
     const ad = await this.adsRepository.findOne({ id: params.adId });
-    if (ad && ad.user_id === user.id && !ad.deleted_at) {
-      const mergeAd = this.adsRepository.merge(ad, body);
-      if (specs) {
-        await this.adsSpecRepository.delete({ ad_id: params.adId });
-        specs.map(async spec => {
-          const adSpec = this.adsSpecRepository.create(spec);
-          adSpec.ad_id = ad.id;
-          await this.adsSpecRepository.save(adSpec);
-        });
-      }
-      await this.adsRepository.save(mergeAd);
-      return mergeAd;
-    } else {
+    if (!ad && ad.user_id != user.id && ad.deleted_at) {
       throw makeError('NO_SUCH_AD');
     }
+    if (body.specs) {
+      await this.adsSpecRepository.delete({ ad_id: params.adId });
+    }
+    const mergeAd = this.adsRepository.merge(ad, body);
+    await this.adsRepository.save(mergeAd);
+    return mergeAd;
   }
 
   async getUsersAds(params: UserIdDto) {

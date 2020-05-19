@@ -158,6 +158,7 @@ export class Ads {
   @OneToMany(
     () => AdSpec,
     (spec: AdSpec) => spec.ad,
+    { cascade: true },
   )
   specs: AdSpec[];
 
