@@ -28,7 +28,6 @@ export class AdSpec {
   @ManyToOne(
     () => Ads,
     (ad: Ads) => ad.specs,
-    { eager: true },
   )
   @JoinColumn({ name: 'ad_id' })
   ad: Ads;

@@ -79,6 +79,8 @@ export class AdsService {
     if (!ad || ad.deleted_at) {
       throw makeError('NO_SUCH_AD');
     }
+    const specs = await this.adsSpecRepository.find({ ad_id: params.adId });
+    ad.specs = specs;
     return ad;
   }
 
