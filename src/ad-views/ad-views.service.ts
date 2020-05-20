@@ -15,6 +15,13 @@ export class AdViewsService {
   ) {}
 
   async createAdView(user: User, params: AdIdDto) {
+    const ad = await this.adsRepository.findOne({ id: params.adId });
+    if (!ad || ad.deleted_at || ad.status != AdsStatus.ACTIVE) {
+      throw makeError('AD_NOT_ACTIVATED_OR_WAS_DELETED');
+    }
+    ad.views_count += 1
+    await this.adsRepository.save(ad);
+
     const adView = this.adViewRepository.create();
     adView.user_id = user.id;
     adView.ad_id = params.adId;
