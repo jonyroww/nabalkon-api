@@ -134,7 +134,7 @@ export class Ads {
   @ApiProperty({
     type: 'int',
     nullable: false,
-    default: 0
+    default: 0,
   })
   @Column({ type: 'int' })
   views_count: number;
