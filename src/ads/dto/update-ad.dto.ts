@@ -16,14 +16,16 @@ import { AdsState } from '../../constants/AdsState.enum';
 import { AdsTransferMode } from '../../constants/AdsTransferMode.enum';
 import { CreateAdSpecDto } from '../../ad-specs/dto/create-ad-spec-body.dto';
 
-export class CreateAdDto {
+export class UpdateAdDto {
   @ApiProperty({ type: 'Date' })
   @IsDate()
   @Transform(TransformDate)
+  @IsOptional()
   active_until: Date;
 
-  @ApiProperty()
+  @ApiPropertyOptional()
   @IsEnum(AdsState)
+  @IsOptional()
   state: AdsState;
 
   @ApiPropertyOptional({ type: 'string' })
@@ -50,6 +52,7 @@ export class CreateAdDto {
   @ApiPropertyOptional({ type: 'number' })
   @Transform(TransformInt)
   @IsNumber()
+  @IsOptional()
   price: number;
 
   @ApiPropertyOptional({ type: 'string' })
@@ -98,6 +101,7 @@ export class CreateAdDto {
   contact_no_matter: boolean;
 
   @ApiProperty({ type: 'number' })
+  @IsOptional()
   @IsNumber()
   @Transform(TransformInt)
   category_id: number;
