@@ -19,8 +19,8 @@ export class AdViewsService {
     if (!ad || ad.deleted_at || ad.status != AdsStatus.ACTIVE) {
       throw makeError('AD_NOT_ACTIVATED_OR_WAS_DELETED');
     }
-    ad.views_count += 1;
-    await this.adsRepository.save(ad);
+
+    await this.adsRepository.increment({ id: ad.id }, 'views_count', 1);
 
     const adView = this.adViewRepository.create();
     adView.user_id = user.id;
