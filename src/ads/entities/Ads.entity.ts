@@ -131,6 +131,14 @@ export class Ads {
   })
   status: AdsStatus;
 
+  @ApiProperty({
+    type: 'int',
+    nullable: false,
+    default: 0,
+  })
+  @Column({ type: 'int' })
+  views_count: number;
+
   @ApiPropertyOptional({ type: 'int' })
   @Column({ type: 'int' })
   user_id: number;

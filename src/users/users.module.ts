@@ -5,7 +5,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { FavoriteAdGroup } from '../favorite-ads-group/entities/ad-group.entity';
 
 @Module({
-  imports:[TypeOrmModule.forFeature([ FavoriteAdGroup])],
+  imports: [TypeOrmModule.forFeature([FavoriteAdGroup])],
   controllers: [UsersController],
   providers: [UsersService],
 })

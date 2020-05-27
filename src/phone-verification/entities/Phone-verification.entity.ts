@@ -73,7 +73,7 @@ export class PhoneVerification {
   @OneToOne(
     () => User,
     (user: User) => user.registration,
-    { nullable: true }
+    { nullable: true },
   )
   @JoinColumn({ name: 'user_id' })
   user?: User;
