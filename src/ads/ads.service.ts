@@ -84,7 +84,7 @@ export class AdsService {
   }
 
   async getOneAd(params: AdIdDto, query: GetOneQueryDto) {
-    var ad: Ads;
+    let ad: Ads;
     if (query.join == 'ad_favorites_metadata') {
       ad = await this.adsRepository.findOne(
         { id: params.adId },

@@ -1,4 +1,4 @@
-import { MigrationInterface, QueryRunner, TableForeignKey } from 'typeorm';
+import { MigrationInterface, QueryRunner } from 'typeorm';
 
 export class adsFavoritesMetadata1591049510643 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<any> {
