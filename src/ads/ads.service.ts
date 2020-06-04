@@ -31,11 +31,11 @@ export class AdsService {
   async getAllAds(query: GetAllQueryDto) {
     const qb = this.adsRepository.createQueryBuilder('ads');
 
-    if (query.join == "ad_favorites_metadata"){
+    if (query.join == 'ad_favorites_metadata') {
       qb.leftJoinAndSelect(
         'ads.ads_favorites_methadata',
-        'ads_favorites_methadata'
-      )
+        'ads_favorites_methadata',
+      );
     }
 
     qb.where('ads.deleted_at is null')
@@ -84,14 +84,23 @@ export class AdsService {
   }
 
   async getOneAd(params: AdIdDto, query: GetOneQueryDto) {
-    var ad:  Ads;
-    if (query.join == "ad_favorites_metadata"){
-      ad = await this.adsRepository.findOne({ id: params.adId }, { join: { alias: "ads", leftJoinAndSelect: { ads_favorites_methadata: "ads.ads_favorites_methadata" }}});
-    }
-    else{
+    var ad: Ads;
+    if (query.join == 'ad_favorites_metadata') {
+      ad = await this.adsRepository.findOne(
+        { id: params.adId },
+        {
+          join: {
+            alias: 'ads',
+            leftJoinAndSelect: {
+              ads_favorites_methadata: 'ads.ads_favorites_methadata',
+            },
+          },
+        },
+      );
+    } else {
       ad = await this.adsRepository.findOne({ id: params.adId });
     }
-    
+
     if (!ad || ad.deleted_at) {
       throw makeError('NO_SUCH_AD');
     }
