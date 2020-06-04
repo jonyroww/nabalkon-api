@@ -3,6 +3,8 @@ import { AdsRepository } from './repositories/ads.repository';
 import { CreateAdDto } from './dto/create-ad.dto';
 import { AdsStatus } from '../constants/AdsStatus.enum';
 import { GetAllQueryDto } from './dto/get-all-query.dto';
+import { GetOneQueryDto } from './dto/get-one-query.dto';
+import { Ads } from './entities/Ads.entity';
 import { Order } from '../constants/Order.enum';
 import { User } from '../users/entities/User.entity';
 import { AdIdDto } from './dto/ad-id.dto';
@@ -29,11 +31,18 @@ export class AdsService {
   async getAllAds(query: GetAllQueryDto) {
     const qb = this.adsRepository.createQueryBuilder('ads');
 
+    if (query.join == "ad_favorites_metadata"){
+      qb.leftJoinAndSelect(
+        'ads.ads_favorites_methadata',
+        'ads_favorites_methadata'
+      )
+    }
+
     qb.where('ads.deleted_at is null')
       .andWhere('ads.status = :status', {
         status: AdsStatus.ACTIVE,
       })
-      .andWhere('ads.active_until > NOW()');
+      .andWhere('ads.active_until < NOW()');
 
     if (query.q) {
       qb.addSelect(`word_similarity (:q, "title")`, 'similarity_rank');
@@ -74,8 +83,15 @@ export class AdsService {
     return { total: total, data: data };
   }
 
-  async getOneAd(params: AdIdDto) {
-    const ad = await this.adsRepository.findOne({ id: params.adId });
+  async getOneAd(params: AdIdDto, query: GetOneQueryDto) {
+    var ad:  Ads;
+    if (query.join == "ad_favorites_metadata"){
+      ad = await this.adsRepository.findOne({ id: params.adId }, { join: { alias: "ads", leftJoinAndSelect: { ads_favorites_methadata: "ads.ads_favorites_methadata" }}});
+    }
+    else{
+      ad = await this.adsRepository.findOne({ id: params.adId });
+    }
+    
     if (!ad || ad.deleted_at) {
       throw makeError('NO_SUCH_AD');
     }

@@ -194,7 +194,7 @@ export class Ads {
   @ApiPropertyOptional({ type: () => AdsFavoritesMetadata })
   @OneToOne(
     () => AdsFavoritesMetadata,
-    (adsFavoritesMetadata: AdsFavoritesMetadata) => adsFavoritesMetadata.ad_id,
+    (adsFavoritesMetadata: AdsFavoritesMetadata) => adsFavoritesMetadata.ad,
   )
   ads_favorites_methadata: AdsFavoritesMetadata;
 }

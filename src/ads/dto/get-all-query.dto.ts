@@ -40,6 +40,11 @@ export class GetAllQueryDto extends PaginationFilterDto {
   @ApiPropertyOptional({ type: 'string' })
   @IsOptional()
   @IsString()
+  join: string;
+
+  @ApiPropertyOptional({ type: 'string' })
+  @IsOptional()
+  @IsString()
   sort: string;
 
   @ApiPropertyOptional({ enum: Order })
