@@ -42,7 +42,7 @@ export class AdsService {
       .andWhere('ads.status = :status', {
         status: AdsStatus.ACTIVE,
       })
-      .andWhere('ads.active_until < NOW()');
+      .andWhere('ads.active_until > NOW()');
 
     if (query.q) {
       qb.addSelect(`word_similarity (:q, "title")`, 'similarity_rank');
