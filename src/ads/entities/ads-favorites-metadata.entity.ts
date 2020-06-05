@@ -11,7 +11,7 @@ import { Ads } from '../entities/Ads.entity';
 @ViewEntity({
   name: 'ads_favorites_metadata',
   expression: `
-    SELECT ads.id AS ad_id, count(favorite_ads.ad_id) AS count_favorite_ads
+    SELECT ads.id AS ad_id, count(favorite_ads.ad_id) AS count_ad_favorites
     FROM ads LEFT JOIN favorite_ads ON ads.id = favorite_ads.ad_id
     GROUP BY ads.id`,
 })
