@@ -1,8 +1,20 @@
-import { Entity, Column, PrimaryColumn, OneToOne, JoinColumn } from 'typeorm';
+import {
+  ViewEntity,
+  Column,
+  PrimaryColumn,
+  OneToOne,
+  JoinColumn,
+} from 'typeorm';
 import { ApiPropertyOptional } from '@nestjs/swagger';
 import { Ads } from '../entities/Ads.entity';
 
-@Entity({ name: 'ads_favorites_metadata' })
+@ViewEntity({
+  name: 'ads_favorites_metadata',
+  expression: `
+    SELECT ads.id AS ad_id, count(favorite_ads.ad_id) AS count_favorite_ads
+    FROM ads LEFT JOIN favorite_ads ON ads.id = favorite_ads.ad_id
+    GROUP BY ads.id`,
+})
 export class AdsFavoritesMetadata {
   @ApiPropertyOptional()
   @PrimaryColumn({ type: 'int' })
