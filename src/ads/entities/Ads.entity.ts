@@ -195,5 +195,5 @@ export class Ads {
     () => AdsFavoritesMetadata,
     (adsFavoritesMetadata: AdsFavoritesMetadata) => adsFavoritesMetadata.ad,
   )
-  ads_favorites_methadata: AdsFavoritesMetadata;
+  ads_favorites_metadata: AdsFavoritesMetadata;
 }

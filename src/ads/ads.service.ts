@@ -33,8 +33,8 @@ export class AdsService {
 
     if (query.join && query.join.includes('ad_favorites_metadata')) {
       qb.leftJoinAndSelect(
-        'ads.ads_favorites_methadata',
-        'ads_favorites_methadata',
+        'ads.ads_favorites_metadata',
+        'ads_favorites_metadata',
       );
     }
 
@@ -92,7 +92,7 @@ export class AdsService {
           join: {
             alias: 'ads',
             leftJoinAndSelect: {
-              ads_favorites_methadata: 'ads.ads_favorites_methadata',
+              ads_favorites_metadata: 'ads.ads_favorites_metadata',
             },
           },
         },

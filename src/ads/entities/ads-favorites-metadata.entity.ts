@@ -15,7 +15,7 @@ export class AdsFavoritesMetadata {
   @ApiPropertyOptional({ type: () => Ads })
   @OneToOne(
     () => Ads,
-    (ads: Ads) => ads.ads_favorites_methadata,
+    (ads: Ads) => ads.ads_favorites_metadata,
   )
   @JoinColumn({ name: 'ad_id' })
   ad: Ads;
