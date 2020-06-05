@@ -1,9 +1,10 @@
-import { IsString, IsOptional } from 'class-validator';
+import { IsArray, IsString, IsOptional } from 'class-validator';
 import { ApiPropertyOptional } from '@nestjs/swagger';
 
 export class GetOneQueryDto {
-  @ApiPropertyOptional({ type: 'string' })
+  @ApiPropertyOptional({ type: 'string', isArray: true })
   @IsOptional()
-  @IsString()
-  join: string;
+  @IsArray()
+  @IsString({ each: true })
+  join: Array<string>;
 }

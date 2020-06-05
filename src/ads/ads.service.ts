@@ -31,7 +31,7 @@ export class AdsService {
   async getAllAds(query: GetAllQueryDto) {
     const qb = this.adsRepository.createQueryBuilder('ads');
 
-    if (query.join == 'ad_favorites_metadata') {
+    if (query.join && query.join.includes('ad_favorites_metadata')) {
       qb.leftJoinAndSelect(
         'ads.ads_favorites_methadata',
         'ads_favorites_methadata',
@@ -85,7 +85,7 @@ export class AdsService {
 
   async getOneAd(params: AdIdDto, query: GetOneQueryDto) {
     let ad: Ads;
-    if (query.join == 'ad_favorites_metadata') {
+    if (query.join && query.join.includes('ad_favorites_metadata')) {
       ad = await this.adsRepository.findOne(
         { id: params.adId },
         {

@@ -1,4 +1,4 @@
-import { IsNumber, IsInt, IsString, IsOptional, IsEnum } from 'class-validator';
+import { IsNumber, IsInt, IsString, IsOptional, IsEnum, IsArray } from 'class-validator';
 import { ApiPropertyOptional } from '@nestjs/swagger';
 import { Order } from '../../constants/Order.enum';
 import { PaginationFilterDto } from '../../common/dto/pagination-filter.dto';
@@ -37,10 +37,11 @@ export class GetAllQueryDto extends PaginationFilterDto {
   @IsString()
   search_text: string;
 
-  @ApiPropertyOptional({ type: 'string' })
+  @ApiPropertyOptional({ type: 'string', isArray: true })
   @IsOptional()
-  @IsString()
-  join: string;
+  @IsArray()
+  @IsString({ each: true })
+  join: Array<string>;
 
   @ApiPropertyOptional({ type: 'string' })
   @IsOptional()
