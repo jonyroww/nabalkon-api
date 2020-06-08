@@ -7,6 +7,7 @@ import {
   JoinColumn,
   ManyToMany,
   JoinTable,
+  OneToOne,
 } from 'typeorm';
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { AdsState } from '../../constants/AdsState.enum';
@@ -15,8 +16,8 @@ import { AdsStatus } from '../../constants/AdsStatus.enum';
 import { User } from '../../users/entities/User.entity';
 import { AdView } from '../../ad-views/entities/AdView.entity';
 import { UserBasketAds } from '../../basket/entities/Basket.entity';
-import { FavoriteAdGroup } from '../../favorite-ads-group/entities/ad-group.entity';
 import { AdSpec } from '../../ad-specs/entities/ad-spec.entity';
+import { AdsFavoritesMetadata } from '../entities/ads-favorites-metadata.entity';
 
 @Entity({ name: 'ads' })
 export class Ads {
@@ -188,4 +189,11 @@ export class Ads {
     inverseJoinColumn: { name: 'ad_id', referencedColumnName: 'id' },
   })
   users_added_to_favorite: User[];
+
+  @ApiPropertyOptional({ type: () => AdsFavoritesMetadata })
+  @OneToOne(
+    () => AdsFavoritesMetadata,
+    (adsFavoritesMetadata: AdsFavoritesMetadata) => adsFavoritesMetadata.ad,
+  )
+  ads_favorites_metadata: AdsFavoritesMetadata;
 }

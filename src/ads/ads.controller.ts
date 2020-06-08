@@ -20,6 +20,7 @@ import {
 } from '@nestjs/swagger';
 import { CreateAdDto } from './dto/create-ad.dto';
 import { GetAllQueryDto } from './dto/get-all-query.dto';
+import { GetOneQueryDto } from './dto/get-one-query.dto';
 import { User } from '../users/entities/User.entity';
 import { GetUser } from '../common/decorators/get-user.decorator';
 import { AdIdDto } from './dto/ad-id.dto';
@@ -64,8 +65,8 @@ export class AdsController {
   @ApiTags('Ads')
   @ApiOkResponse()
   @Get('/ads/:adId')
-  getOneAd(@Param() params: AdIdDto) {
-    return this.adsService.getOneAd(params);
+  getOneAd(@Param() params: AdIdDto, @Query() query: GetOneQueryDto) {
+    return this.adsService.getOneAd(params, query);
   }
 
   @ApiTags('Ads')
